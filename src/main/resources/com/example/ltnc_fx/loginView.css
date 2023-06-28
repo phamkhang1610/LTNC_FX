@@ -1,0 +1,13 @@
+.pane{
+    -fx-background-color:#d1e142f2;
+}
+.pane1{
+    -fx-background-color: linear-gradient(to bottom right, #eb4f4f,#b93636,#6f1c1c,#390b0b);
+}
+.close{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.text{
+    -fx-border-radius: 40%;
+}
