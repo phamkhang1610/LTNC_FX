@@ -7,9 +7,11 @@ import Model.getData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
@@ -18,11 +20,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.w3c.dom.events.MouseEvent;
+//import org.w3c.dom.events.MouseEvent;
 
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+//import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +44,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+//import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon;
 
 
 public class DatabroadController implements Initializable {
@@ -158,48 +166,42 @@ public class DatabroadController implements Initializable {
 
     @FXML
     private AnchorPane staff_form;
-
     @FXML
     private Button supplier;
-
     @FXML
     private TableView<?> tbl_bill;
-
     @FXML
     private TableView<Staff> tbl_search_staff;
     @FXML
     private TableView<Staff> tbl_list_staff;
     @FXML
     private TableColumn<Staff, String> col_list_addre;
-
     @FXML
     private TableColumn<Staff, String> col_list_cmnd;
-
     @FXML
     private TableColumn<Staff, String> col_list_date;
-
     @FXML
     private TableColumn<Staff, String> col_list_idstaff;
-
     @FXML
     private TableColumn<Staff, String> col_list_namestaff;
-
     @FXML
     private TableColumn<Staff, String> col_list_sdt;
-
     @FXML
     private TableColumn<Staff, String> col_list_sex;
-
+    @FXML
+    private TableColumn<Staff, Void> col_list_delete;
+    @FXML
+    private TableColumn<Staff, Void> col_list_up;
+    @FXML
+    private Label label_search;
     @FXML
     private Label total_bill;
-
     @FXML
     private Button up_btn_staff;
     @FXML
     private Button sign_out;
     @FXML
     private Label user_label;
-
     @FXML
     private AnchorPane main_form;
     @FXML
@@ -229,9 +231,9 @@ public class DatabroadController implements Initializable {
         alert.setContentText(not);
         alert.showAndWait();
     }
-    public void displayUser(){
-        user_label.setText(Account.username.toUpperCase());
-    }
+//    public void displayUser(){
+//        user_label.setText(Account.username.toUpperCase());
+//    }
     //chọn tab
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dash) {
@@ -258,6 +260,8 @@ public class DatabroadController implements Initializable {
             supplier.setStyle("-fx-background-color: transparent");
             showStaff();
             add_list_sex();
+            label_search.setVisible(false);
+            tbl_search_staff.setVisible(false);
         } else if (event.getSource() == medicine) {
             dash_form.setVisible(false);
             staff_form.setVisible(false);
@@ -324,6 +328,7 @@ public class DatabroadController implements Initializable {
     //ha lấy ra một list staff trong sql
     private String[] sexlist ={"Nam","Nữ"};
     private Image image;
+    //public static Staff up;
     public void add_list_sex(){
         List<String> li = new ArrayList<>();
         for (String a: sexlist){
@@ -363,7 +368,103 @@ public class DatabroadController implements Initializable {
             col_list_cmnd.setCellValueFactory(new PropertyValueFactory<>("cmnd"));
             col_list_addre.setCellValueFactory(new PropertyValueFactory<>("addresStaff"));
             col_list_sdt.setCellValueFactory(new PropertyValueFactory<>("phoneStaff"));
+            // Create a new TableColumn for the "Delete" icon
+            //TableColumn<Staff, Void> col_list_delete = new TableColumn<>("");
+            // Set the cell factory to display the "Trash" icon
+            col_list_delete.setCellFactory(column -> {
+                TableCell<Staff, Void> cell = new TableCell<>() {
+                    FontAwesomeIcon deleIcon = new FontAwesomeIcon();
 
+                    {
+                        // Styling the icon if needed
+                        deleIcon.getStyleClass().add("delete-icon");
+                        deleIcon.setIconName("TRASH");
+                        deleIcon.setSize("20px");
+                        deleIcon.setCursor(Cursor.HAND);
+                        deleIcon.setFill(Color.RED);
+                        deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Xác nhận thông tin");
+                            alert.setHeaderText(null);
+                            alert.setContentText("bạn chắc chắn muốn xóa chứ?");
+                            Optional<ButtonType> op = alert.showAndWait();
+                            if(op.get().equals(ButtonType.OK)){
+                                Staff staff = tbl_list_staff.getSelectionModel().getSelectedItem();
+                                // Thực hiện hoạt động khi người dùng nhấp vào biểu tượng xóa
+                                String sql = "delete from staff where idStaff ='"+staff.getIdStaff()+"';";
+                                Data data = new Data();
+                                data.ExcuteQueryUpdateDB(sql);
+                                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                alert1.setTitle("THông báo");
+                                alert1.setHeaderText(null);
+                                alert1.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                showStaff();
+                            }
+
+                        });
+                    }
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(deleIcon);
+                        }
+                    }
+                };
+                return cell;
+            });
+            // icon update
+            //TableColumn<Staff, Void> col_list_up = new TableColumn<>("");
+            //  Set the cell factory to display the "Trash" icon
+            col_list_up.setCellFactory(column -> {
+                TableCell<Staff, Void> cellup = new TableCell<>() {
+                    FontAwesomeIcon upIcon = new FontAwesomeIcon();
+                    {
+                        // Styling the icon if needed
+                        upIcon.getStyleClass().add("up-icon");
+                        upIcon.setIconName("PENCIL");
+                        upIcon.setSize("20px");
+                        upIcon.setCursor(Cursor.HAND);
+                        upIcon.setFill(Color.AQUA);
+                        upIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                            Staff staff = tbl_list_staff.getSelectionModel().getSelectedItem();
+                            getData.user = staff.getIdStaff();
+                            try {
+                                Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
+                                Stage stage = new Stage();
+                                Scene scene = new Scene(root);
+                                //ẩn trang cũ
+                                upIcon.getScene().getWindow().hide();
+                                stage.initStyle(StageStyle.TRANSPARENT);
+                                stage.setScene(scene);
+                                stage.show();
+                                showStaff();
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(upIcon);
+                        }
+                    }
+
+                };
+                return cellup;
+            });
+
+            //tbl_list_staff.getColumns().add(col_list_delete); // Add the "Delete" column to the table
+            //tbl_list_staff.getColumns().add(col_list_up);// Add icon up
             tbl_list_staff.setItems(list_Satff);
         }catch (Exception e){ e.printStackTrace();}
     }
@@ -429,16 +530,25 @@ public class DatabroadController implements Initializable {
                 );
                 list.add(a);
             }
-            col_search_idstaff.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
-            col_search_namestaff.setCellValueFactory(new PropertyValueFactory<>("nameStaff"));
-            col_search_sex.setCellValueFactory(new PropertyValueFactory<>("sexStaff"));
-            col_search_date.setCellValueFactory(new PropertyValueFactory<>("ngaysinh"));
-            col_search_cmnd.setCellValueFactory(new PropertyValueFactory<>("cmnd"));
-            col_search_addre.setCellValueFactory(new PropertyValueFactory<>("addresStaff"));
-            col_search_sdt.setCellValueFactory(new PropertyValueFactory<>("phoneStaff"));
+            if (!list.isEmpty()) {
+                col_search_idstaff.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+                col_search_namestaff.setCellValueFactory(new PropertyValueFactory<>("nameStaff"));
+                col_search_sex.setCellValueFactory(new PropertyValueFactory<>("sexStaff"));
+                col_search_date.setCellValueFactory(new PropertyValueFactory<>("ngaysinh"));
+                col_search_cmnd.setCellValueFactory(new PropertyValueFactory<>("cmnd"));
+                col_search_addre.setCellValueFactory(new PropertyValueFactory<>("addresStaff"));
+                col_search_sdt.setCellValueFactory(new PropertyValueFactory<>("phoneStaff"));
 
-            tbl_search_staff.setItems(list);
-            search_staff.setText("");
+                tbl_search_staff.setItems(list);
+                tbl_search_staff.setVisible(true);
+                label_search.setVisible(false);
+                search_staff.setText("");
+            } else {
+                tbl_search_staff.setVisible(false);
+                label_search.setVisible(true);
+                search_staff.setText("");
+            }
+
         }catch (Exception e){e.printStackTrace();}
     }
     // lấy ảnh add vào
@@ -454,26 +564,17 @@ public class DatabroadController implements Initializable {
             getData.path = file.getAbsolutePath();
         }
     }
-    public void addStaffSelect(){
-        Staff staff = tbl_list_staff.getSelectionModel().getSelectedItem();
-        int num = tbl_list_staff.getSelectionModel().getSelectedIndex();
-        if((num-1)<-1){return;}
-        id_staff.setText(String.valueOf(staff.getIdStaff()));
-        name_staff.setText(String.valueOf(staff.getNameStaff()));
-        cmnd.setText(String.valueOf(staff.getCmnd()));
-        addre_staff.setText(String.valueOf(staff.getAddresStaff()));
-        sdt_staff.setText(String.valueOf(staff.getPhoneStaff()));
-        String url= "file:"+staff.getImage();
-        image = new Image(url,151,166,false,true);
-        image_staff.setImage(image);
-        getData.path = staff.getImage();
+    public void reset(){
+        id_staff.setText("");name_staff.setText("");date_staff.setValue(null);
+        cmnd.setText("");addre_staff.setText("");sdt_staff.setText("");
+        image_staff.setImage(null);
     }
 
 
     //=============================================
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        displayUser();
+        //displayUser();
         showStaff();
         add_list_sex();
     }

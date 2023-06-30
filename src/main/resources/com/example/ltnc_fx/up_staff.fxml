@@ -10,16 +10,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="416.0" prefWidth="664.0" styleClass="nav" stylesheets="@addmedicine.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.upStaff">
+<AnchorPane fx:id="up_form" prefHeight="416.0" prefWidth="664.0" styleClass="nav" stylesheets="@addmedicine.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.upStaff">
     <children>
-        <Button layoutX="610.0" layoutY="2.0" minHeight="20.0" mnemonicParsing="false" prefWidth="40.0" styleClass="close" stylesheets="@databroad.css" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+        <Button layoutX="610.0" layoutY="2.0" minHeight="20.0" mnemonicParsing="false" onMouseClicked="#close" prefWidth="40.0" styleClass="close" stylesheets="@databroad.css" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
             <graphic>
                 <FontAwesomeIcon iconName="CLOSE" />
             </graphic>
         </Button>
-        <Button layoutX="67.0" layoutY="341.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" textFill="#97b8f5" />
-        <Button layoutX="261.0" layoutY="341.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" styleClass="update-btn" stylesheets="@databroad.css" text="Update" />
+        <Button fx:id="up" layoutX="310.0" layoutY="365.0" mnemonicParsing="false" onAction="#upStaff" prefHeight="25.0" prefWidth="64.0" styleClass="update-btn" stylesheets="@databroad.css" text="Update" />
         <Label layoutX="48.0" layoutY="36.0" text="Staff ID:">
             <font>
                 <Font name="System Bold" size="13.0" />
@@ -55,18 +53,18 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </Label>
-        <TextField layoutX="112.0" layoutY="33.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <TextField layoutX="113.0" layoutY="73.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <TextField layoutX="114.0" layoutY="198.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <TextField layoutX="432.0" layoutY="33.0" prefHeight="25.0" prefWidth="161.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <TextField layoutX="114.0" layoutY="239.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <ComboBox layoutX="113.0" layoutY="111.0" prefWidth="150.0" />
-        <DatePicker layoutX="113.0" layoutY="154.0" prefHeight="25.0" prefWidth="150.0" />
+        <TextField fx:id="id" layoutX="112.0" layoutY="33.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <TextField fx:id="name" layoutX="113.0" layoutY="73.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <TextField fx:id="cmnd" layoutX="114.0" layoutY="198.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <TextField fx:id="add" layoutX="432.0" layoutY="33.0" prefHeight="25.0" prefWidth="161.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <TextField fx:id="sdt" layoutX="114.0" layoutY="239.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <ComboBox fx:id="sex" layoutX="113.0" layoutY="113.0" onAction="#add_up_sex" prefWidth="150.0" />
+        <DatePicker fx:id="date" layoutX="113.0" layoutY="154.0" prefHeight="25.0" prefWidth="150.0" />
         <AnchorPane layoutX="432.0" layoutY="79.0" prefHeight="200.0" prefWidth="161.0" styleClass="shadow" stylesheets="@databroad.css">
             <children>
-                <ImageView fitHeight="200.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="image_upStaff" fitHeight="200.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true" />
             </children>
         </AnchorPane>
-        <Button layoutX="493.0" layoutY="307.0" mnemonicParsing="false" styleClass="reset-btn" stylesheets="@databroad.css" text="Import" />
+        <Button fx:id="imp" layoutX="492.0" layoutY="302.0" mnemonicParsing="false" onAction="#impStaffImage" styleClass="reset-btn" stylesheets="@databroad.css" text="Import" />
     </children>
 </AnchorPane>
