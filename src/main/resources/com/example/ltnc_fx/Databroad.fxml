@@ -183,12 +183,14 @@
                                                       <TableView fx:id="tbl_list_staff" layoutX="14.0" layoutY="71.0" prefHeight="443.0" prefWidth="887.0" stylesheets="@databroad.css">
                                                          <columns>
                                                             <TableColumn fx:id="col_list_idstaff" prefWidth="67.0" text="Staff id" />
-                                                            <TableColumn fx:id="col_list_namestaff" prefWidth="181.0" text="Staff name" />
-                                                            <TableColumn fx:id="col_list_sex" prefWidth="70.0" text="Staff sex" />
-                                                            <TableColumn fx:id="col_list_date" prefWidth="124.0" text="Birthday" />
-                                                            <TableColumn fx:id="col_list_cmnd" prefWidth="115.0" text="CMND" />
-                                                            <TableColumn fx:id="col_list_addre" prefWidth="177.0" text="Address" />
-                                                            <TableColumn fx:id="col_list_sdt" prefWidth="112.0" text="SĐT" />
+                                                            <TableColumn fx:id="col_list_namestaff" prefWidth="147.0" text="Staff name" />
+                                                            <TableColumn fx:id="col_list_sex" prefWidth="72.0" text="Staff sex" />
+                                                            <TableColumn fx:id="col_list_date" prefWidth="110.0" text="Birthday" />
+                                                            <TableColumn fx:id="col_list_cmnd" prefWidth="122.0" text="CMND" />
+                                                            <TableColumn fx:id="col_list_addre" prefWidth="149.0" text="Address" />
+                                                            <TableColumn fx:id="col_list_sdt" minWidth="0.0" prefWidth="124.0" text="SĐT" />
+                                                            <TableColumn fx:id="col_list_delete" maxWidth="1000.0" minWidth="4.0" prefWidth="48.0" text="Xóa" />
+                                                            <TableColumn fx:id="col_list_up" maxWidth="1000.0" minWidth="4.0" prefWidth="42.0" text="Sửa" />
                                                          </columns>
                                                       </TableView>
                                                    </children>
@@ -253,10 +255,8 @@
                                                             <ImageView fx:id="image_staff" fitHeight="166.0" fitWidth="151.0" layoutX="3.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" styleClass="image" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <Button fx:id="add_btn_staff" layoutX="18.0" layoutY="191.0" mnemonicParsing="false" onAction="#addStaff" prefHeight="34.0" prefWidth="70.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
-                                                      <Button fx:id="up_btn_staff" layoutX="201.0" layoutY="193.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" styleClass="update-btn" stylesheets="@databroad.css" text="Update" textFill="#1a1b1a" />
-                                                      <Button fx:id="re_btn_staff" layoutX="381.0" layoutY="193.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Reset" textFill="#0a090a" />
-                                                      <Button fx:id="de_btn_staff" layoutX="551.0" layoutY="193.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" styleClass="delete-btn" stylesheets="@databroad.css" text="Delete" textFill="#141111" />
+                                                      <Button fx:id="add_btn_staff" layoutX="216.0" layoutY="193.0" mnemonicParsing="false" onAction="#addStaff" prefHeight="34.0" prefWidth="70.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
+                                                      <Button fx:id="re_btn_staff" layoutX="462.0" layoutY="193.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Reset" textFill="#0a090a" />
                                                       <DatePicker fx:id="date_staff" layoutX="87.0" layoutY="129.0" prefHeight="28.0" prefWidth="151.0" />
                                                    </children>
                                                    <styleClass>
@@ -264,7 +264,7 @@
                                                       <String fx:value="white-bg" />
                                                    </styleClass>
                                                 </AnchorPane>
-                                                <AnchorPane layoutX="7.0" layoutY="261.0" prefHeight="261.0" prefWidth="896.0" stylesheets="@databroad.css">
+                                                <AnchorPane layoutX="14.0" layoutY="296.0" prefHeight="217.0" prefWidth="896.0" stylesheets="@databroad.css">
                                                    <styleClass>
                                                       <String fx:value="shadow" />
                                                       <String fx:value="white-bg" />
@@ -284,7 +284,7 @@
                                                             </AnchorPane>
                                                          </children>
                                                       </AnchorPane>
-                                                      <TableView fx:id="tbl_search_staff" layoutX="4.0" layoutY="61.0" prefHeight="197.0" prefWidth="887.0" styleClass="column-header-background" stylesheets="@databroad.css">
+                                                      <TableView fx:id="tbl_search_staff" layoutX="4.0" layoutY="61.0" prefHeight="146.0" prefWidth="887.0" styleClass="column-header-background" stylesheets="@databroad.css" visible="false">
                                                         <columns>
                                                           <TableColumn fx:id="col_search_idstaff" prefWidth="67.0" text="Staff id" />
                                                             <TableColumn fx:id="col_search_namestaff" prefWidth="181.0" text="Staff name" />
@@ -295,6 +295,11 @@
                                                             <TableColumn fx:id="col_search_sdt" prefWidth="112.0" text="SĐT" />
                                                         </columns>
                                                       </TableView>
+                                                      <Label fx:id="label_search" layoutX="294.0" layoutY="82.0" prefHeight="86.0" prefWidth="401.0" text="Có thể bạn nhập sai mã nhân viên hoặc nhân viên không tồn tại" visible="false">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
                                                    </children>
                                                 </AnchorPane>
                                              </children>

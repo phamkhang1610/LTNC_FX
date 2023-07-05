@@ -2,7 +2,7 @@ module com.example.ltnc_fx {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
-
+    requires fontawesomefx;
 
 
     opens com.example.ltnc_fx to javafx.fxml;
