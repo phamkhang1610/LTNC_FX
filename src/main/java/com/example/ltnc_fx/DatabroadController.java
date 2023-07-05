@@ -45,8 +45,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon;
-
-
 public class DatabroadController implements Initializable {
     @FXML
     private Button add_btn_bill;
@@ -76,27 +74,24 @@ public class DatabroadController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> col_price_bill;
-
     @FXML
     private TableColumn<Staff, String> col_search_addre;
-
     @FXML
     private TableColumn<Staff, String> col_search_cmnd;
-
     @FXML
     private TableColumn<Staff, String> col_search_date;
-
     @FXML
     private TableColumn<Staff, String> col_search_idstaff;
-
     @FXML
     private TableColumn<Staff, String> col_search_namestaff;
-
     @FXML
     private TableColumn<Staff, String> col_search_sdt;
-
     @FXML
     private TableColumn<Staff, String> col_search_sex;
+    @FXML
+    private TableColumn<Staff, Void> col_search_dele;
+    @FXML
+    private TableColumn<Staff,Void> col_search_up;
 
     @FXML
     private TableColumn<?, ?> col_size_bill;
@@ -374,7 +369,6 @@ public class DatabroadController implements Initializable {
             col_list_delete.setCellFactory(column -> {
                 TableCell<Staff, Void> cell = new TableCell<>() {
                     FontAwesomeIcon deleIcon = new FontAwesomeIcon();
-
                     {
                         // Styling the icon if needed
                         deleIcon.getStyleClass().add("delete-icon");
@@ -416,7 +410,7 @@ public class DatabroadController implements Initializable {
                 return cell;
             });
             // icon update
-            //TableColumn<Staff, Void> col_list_up = new TableColumn<>("");
+            //TableColumn<Staff, Void> col_ list_up = new TableColumn<>("");
             //  Set the cell factory to display the "Trash" icon
             col_list_up.setCellFactory(column -> {
                 TableCell<Staff, Void> cellup = new TableCell<>() {
@@ -458,13 +452,9 @@ public class DatabroadController implements Initializable {
                             setGraphic(upIcon);
                         }
                     }
-
                 };
                 return cellup;
             });
-
-            //tbl_list_staff.getColumns().add(col_list_delete); // Add the "Delete" column to the table
-            //tbl_list_staff.getColumns().add(col_list_up);// Add icon up
             tbl_list_staff.setItems(list_Satff);
         }catch (Exception e){ e.printStackTrace();}
     }
@@ -538,7 +528,88 @@ public class DatabroadController implements Initializable {
                 col_search_cmnd.setCellValueFactory(new PropertyValueFactory<>("cmnd"));
                 col_search_addre.setCellValueFactory(new PropertyValueFactory<>("addresStaff"));
                 col_search_sdt.setCellValueFactory(new PropertyValueFactory<>("phoneStaff"));
-
+                col_search_dele.setCellFactory(column -> {
+                    TableCell<Staff, Void> cellSearch = new TableCell<>() {
+                        FontAwesomeIcon deleIcon_search = new FontAwesomeIcon();
+                        {
+                            // Styling the icon if needed
+                            deleIcon_search.getStyleClass().add("delete-icon");
+                            deleIcon_search.setIconName("TRASH");
+                            deleIcon_search.setSize("20px");
+                            deleIcon_search.setCursor(Cursor.HAND);
+                            deleIcon_search.setFill(Color.RED);
+                            deleIcon_search.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Xác nhận thông tin");
+                                alert.setHeaderText(null);
+                                alert.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                Optional<ButtonType> op = alert.showAndWait();
+                                if(op.get().equals(ButtonType.OK)){
+                                    Staff staff = tbl_search_staff.getSelectionModel().getSelectedItem();
+                                    // Thực hiện hoạt động khi người dùng nhấp vào biểu tượng xóa
+                                    String sql = "delete from staff where idStaff ='"+staff.getIdStaff()+"';";
+                                    Data data = new Data();
+                                    data.ExcuteQueryUpdateDB(sql);
+                                    Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                    alert1.setTitle("THông báo");
+                                    alert1.setHeaderText(null);
+                                    alert1.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                    showStaff();
+                                }
+                            });
+                        }
+                        @Override
+                        protected void updateItem(Void item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                setGraphic(deleIcon_search);
+                            }
+                        }
+                    };
+                    return cellSearch;
+                });
+                col_search_up.setCellFactory(column -> {
+                    TableCell<Staff, Void> cellup_Search = new TableCell<>() {
+                        FontAwesomeIcon upIcon_search = new FontAwesomeIcon();
+                        {
+                            // Styling the icon if needed
+                            upIcon_search.getStyleClass().add("up-icon");
+                            upIcon_search.setIconName("PENCIL");
+                            upIcon_search.setSize("20px");
+                            upIcon_search.setCursor(Cursor.HAND);
+                            upIcon_search.setFill(Color.AQUA);
+                            upIcon_search.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                Staff staff = tbl_search_staff.getSelectionModel().getSelectedItem();
+                                getData.user = staff.getIdStaff();
+                                try {
+                                    Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
+                                    Stage stage = new Stage();
+                                    Scene scene = new Scene(root);
+                                    //ẩn trang cũ
+                                    upIcon_search.getScene().getWindow().hide();
+                                    stage.initStyle(StageStyle.TRANSPARENT);
+                                    stage.setScene(scene);
+                                    stage.show();
+                                    showStaff();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        }
+                        @Override
+                        protected void updateItem(Void item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                setGraphic(upIcon_search);
+                            }
+                        }
+                    };
+                    return cellup_Search;
+                });
                 tbl_search_staff.setItems(list);
                 tbl_search_staff.setVisible(true);
                 label_search.setVisible(false);
@@ -548,7 +619,6 @@ public class DatabroadController implements Initializable {
                 label_search.setVisible(true);
                 search_staff.setText("");
             }
-
         }catch (Exception e){e.printStackTrace();}
     }
     // lấy ảnh add vào
@@ -569,7 +639,6 @@ public class DatabroadController implements Initializable {
         cmnd.setText("");addre_staff.setText("");sdt_staff.setText("");
         image_staff.setImage(null);
     }
-
 
     //=============================================
     @Override

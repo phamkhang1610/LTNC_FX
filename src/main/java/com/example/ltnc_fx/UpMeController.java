@@ -1,2 +1,4 @@
-package com.example.ltnc_fx;public class UpMeController {
+package com.example.ltnc_fx;
+
+public class UpMeController {
 }

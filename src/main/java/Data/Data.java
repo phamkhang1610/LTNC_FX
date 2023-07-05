@@ -7,9 +7,9 @@ import java.sql.*;
  * @author Admin
  */
 public class Data {
-    String URL = "jdbc:mysql://localhost:3306/ltnc";
-    String username = "root";
-    String password ="trongkhang";
+    String URL = "jdbc:mysql://103.38.236.189:3306/nhathuocdb";
+    String username = "Datbeo";
+    String password ="Dat.anh3";
      public Connection conn;
     public Data(){
         try {
