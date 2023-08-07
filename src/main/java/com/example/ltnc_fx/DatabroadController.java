@@ -40,10 +40,8 @@ import java.util.ResourceBundle;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
-
     @FXML
     private Button groupMedicine;
-
     @FXML
     private Button add_btn_bill;
     @FXML
