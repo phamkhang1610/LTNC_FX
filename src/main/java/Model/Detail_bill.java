@@ -54,5 +54,4 @@ public class Detail_bill {
     public void setSize(int size) {
         this.size = size;
     }
-
 }
