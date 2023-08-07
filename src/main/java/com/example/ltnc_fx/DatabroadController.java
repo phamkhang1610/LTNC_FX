@@ -42,6 +42,9 @@ import java.util.ResourceBundle;
 public class DatabroadController implements Initializable {
 
     @FXML
+    private Button groupMedicine;
+
+    @FXML
     private Button add_btn_bill;
     @FXML
     private Button add_btn_staff;

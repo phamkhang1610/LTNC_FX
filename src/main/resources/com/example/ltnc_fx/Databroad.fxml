@@ -15,7 +15,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -102,9 +101,9 @@
                               <AnchorPane layoutX="9.0" layoutY="4.0" prefHeight="124.0" prefWidth="169.0">
                                  <children>
                                     <ImageView fitHeight="106.0" fitWidth="114.0" layoutX="41.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../../../../Downloads/Video/pharmacy-icon.png" />
-                                       </image>
+<!--                                       <image>-->
+<!--                                          <Image url="@../../../../../../../../Downloads/Video/pharmacy-icon.png" />-->
+<!--                                       </image>-->
                                     </ImageView>
                                     <Label fx:id="user_label" layoutX="85.0" layoutY="116.0" text="Admin">
                                        <font>
@@ -118,6 +117,14 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
+                              <Button fx:id="groupMedicine" layoutX="12.0" layoutY="366.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="165.0" styleClass="nav-btn" stylesheets="@databroad.css" text="Button">
+                                 <graphic>
+                                    <FontAwesomeIcon size="1.2em" />
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                      </children>
