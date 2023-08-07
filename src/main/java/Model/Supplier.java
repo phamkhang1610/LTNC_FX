@@ -12,7 +12,6 @@ public class Supplier {
         this.addresSup = address;
         this.sdtSup  = sdt;
     }
-
     public String getIdSup() {
         return idSup;
     }

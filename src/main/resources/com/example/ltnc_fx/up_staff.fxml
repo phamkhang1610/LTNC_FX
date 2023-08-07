@@ -58,8 +58,8 @@
         <TextField fx:id="cmnd" layoutX="114.0" layoutY="198.0" styleClass="box" stylesheets="@addmedicine.css" />
         <TextField fx:id="add" layoutX="432.0" layoutY="33.0" prefHeight="25.0" prefWidth="161.0" styleClass="box" stylesheets="@addmedicine.css" />
         <TextField fx:id="sdt" layoutX="114.0" layoutY="239.0" styleClass="box" stylesheets="@addmedicine.css" />
-        <ComboBox fx:id="sex" layoutX="113.0" layoutY="113.0" onAction="#add_up_sex" prefWidth="150.0" />
-        <DatePicker fx:id="date" layoutX="113.0" layoutY="154.0" prefHeight="25.0" prefWidth="150.0" />
+        <ComboBox fx:id="sex" layoutX="113.0" layoutY="113.0" onAction="#add_up_sex" prefWidth="150.0" styleClass="box" stylesheets="@addmedicine.css" />
+        <DatePicker fx:id="date" layoutX="113.0" layoutY="154.0" prefHeight="25.0" prefWidth="150.0" stylesheets="@addmedicine.css" />
         <AnchorPane layoutX="432.0" layoutY="79.0" prefHeight="200.0" prefWidth="161.0" styleClass="shadow" stylesheets="@databroad.css">
             <children>
                 <ImageView fx:id="image_upStaff" fitHeight="200.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true" />

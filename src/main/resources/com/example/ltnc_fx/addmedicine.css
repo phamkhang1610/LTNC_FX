@@ -1,12 +1,14 @@
 .box{
-    -fx-border-radius: 50px;
-    -fx-background-color: white;
+    -fx-border-radius: 20px;
+    -fx-background-color: transparent;
+    -fx-border-color: #363232;
+
 }
 .box:hover{
     -fx-cursor: hand;
 }
 .box:focused{
-    -fx-border-color: aqua;
+    -fx-border-color: white;
 }
 .nav{
     -fx-background-color: linear-gradient(to bottom right, #FFC1C1,  #FF6EB4,#633364);

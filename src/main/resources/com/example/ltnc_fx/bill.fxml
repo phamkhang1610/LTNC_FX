@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
 
+<AnchorPane prefHeight="552.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.BillController">
+   <children>
+      <AnchorPane layoutX="511.0" prefHeight="571.0" prefWidth="217.0">
+         <children>
+            <Button fx:id="colse" layoutX="226.0" mnemonicParsing="false" onAction="#close" onMouseClicked="#close" prefHeight="33.0" prefWidth="43.0" styleClass="close" stylesheets="@databroad.css">
+               <graphic>
+                  <FontAwesomeIcon iconName="CLOSE" />
+               </graphic>
+            </Button>
+            <Button fx:id="add_btn_bill" layoutX="174.0" layoutY="180.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
+            <Line endX="168.0" layoutX="101.0" layoutY="248.0" startX="-100.0" />
+            <TextField fx:id="name" layoutX="107.0" layoutY="71.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
+            <TextField fx:id="size" layoutX="107.0" layoutY="124.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
+            <Label layoutX="19.0" layoutY="75.0" prefHeight="17.0" prefWidth="66.0" text="Tên thuốc:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="19.0" layoutY="127.0" prefHeight="17.0" prefWidth="66.0" text="Số lượng:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="idStaff" layoutX="107.0" layoutY="286.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
+            <Label layoutX="11.0" layoutY="290.0" prefHeight="19.0" prefWidth="95.0" text="Tên nhân viên">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="19.0" layoutY="347.0" prefHeight="17.0" prefWidth="66.0" text="Ghi chú">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="note" layoutX="108.0" layoutY="357.0" prefHeight="111.0" prefWidth="151.0" />
+            <Button fx:id="pay_btn_bill" layoutX="10.0" layoutY="533.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="251.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Pay">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="36.0" layoutY="484.0" prefHeight="19.0" prefWidth="56.0" text="Tổng:   $">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="total_bill" layoutX="92.0" layoutY="482.0" prefHeight="23.0" prefWidth="110.0" text="0.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="111.0" prefHeight="571.0" prefWidth="512.0" style="-fx-border-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="271.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TableView fx:id="tbl_bill" layoutX="3.0" layoutY="9.0" prefHeight="571.0" prefWidth="512.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="col_idme" prefWidth="87.0" text="Mã thuốc" />
+                <TableColumn fx:id="col_nmaeme" prefWidth="143.0" text="Tên thuốc" />
+                  <TableColumn fx:id="col_sl" prefWidth="104.0" text="Số lượng" />
+                  <TableColumn fx:id="col_money" prefWidth="109.0" text="Giá tiền" />
+                  <TableColumn prefWidth="77.0" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>

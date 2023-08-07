@@ -115,3 +115,15 @@
     -fx-background-color: aqua;
     -fx-cursor: hand;
 }
+.box{
+    -fx-border-radius: 20px;
+    -fx-background-color: transparent;
+    -fx-border-color: #c9c3c3;
+
+}
+.box:hover{
+    -fx-cursor: hand;
+}
+.box:focused{
+    -fx-border-color: aqua;
+}

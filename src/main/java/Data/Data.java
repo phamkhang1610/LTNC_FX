@@ -4,7 +4,7 @@ import java.sql.*;
 
 /**
  *
- * @author Admin
+ * @author Admin..................
  */
 public class Data {
     String URL = "jdbc:mysql://103.38.236.189:3306/nhathuocdb";

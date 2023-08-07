@@ -16,7 +16,6 @@ public class Type {
     public String getIdType() {
         return idType;
     }
-
     public String getNameType() {
         return nameType;
     }

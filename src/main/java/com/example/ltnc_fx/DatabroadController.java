@@ -1,7 +1,7 @@
 package com.example.ltnc_fx;
 
 import Data.Data;
-import Model.Account;
+import Model.Medicine;
 import Model.Staff;
 import Model.getData;
 import javafx.collections.FXCollections;
@@ -24,54 +24,43 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-//import org.w3c.dom.events.MouseEvent;
-
 import javafx.scene.input.MouseEvent;
-import javafx.event.EventHandler;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-//import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
-//import java.util.Date;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-//import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon;
+//import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
+
     @FXML
     private Button add_btn_bill;
-
     @FXML
     private Button add_btn_staff;
-
     @FXML
     private TextField addre_staff;
-
     @FXML
     private Button bill;
     @FXML
     private Button imp_btn_staff;
-
     @FXML
     private AnchorPane bill_form;
-
     @FXML
     private TextField cmnd;
-
     @FXML
     private TableColumn<?, ?> col_medicineID_bill;
-
     @FXML
     private TableColumn<?, ?> col_medicine_bill;
-
+    @FXML
+    private Label noty_search;
     @FXML
     private TableColumn<?, ?> col_price_bill;
     @FXML
@@ -209,6 +198,37 @@ public class DatabroadController implements Initializable {
     private Button btn_search_staff;
     @FXML
     private TextField search_staff;
+    //======================fxml medicine=============
+    @FXML
+    private TextField search_Me;
+    @FXML
+    private Button add_btl_Me;
+    @FXML
+    private Button btn_search_me;
+    @FXML
+    private TableView<Medicine> tbl_medicine;
+    @FXML
+    private TableColumn<Medicine, Void> col_deleMe;
+    @FXML
+    private TableColumn<Medicine, String> col_expiry;
+    @FXML
+    private TableColumn<Medicine, String> col_idMe;
+    @FXML
+    private TableColumn<Medicine, String> col_idSup_me;
+    @FXML
+    private TableColumn<Medicine, String> col_location;
+    @FXML
+    private TableColumn<Medicine,String> col_nameMe;
+    @FXML
+    private TableColumn<Medicine, String> col_price;
+    @FXML
+    private TableColumn<Medicine,String> col_quantity;
+    @FXML
+    private TableColumn<Medicine, Void> col_upMe;
+    @FXML
+    private Button reload_me;
+    @FXML
+    private TableColumn<?, ?> col_malo;
     // bắt đầu điều khiển
     public void erro(String err){
         Alert alert;
@@ -268,6 +288,9 @@ public class DatabroadController implements Initializable {
             bill.setStyle("-fx-background-color: transparent");
             staff.setStyle("-fx-background-color: transparent");
             supplier.setStyle("-fx-background-color: transparent");
+            ///
+            tbl_medicine.setVisible(false);
+            noty_search.setVisible(false);
         } else if (event.getSource() == bill) {
             dash_form.setVisible(false);
             staff_form.setVisible(false);
@@ -641,6 +664,170 @@ public class DatabroadController implements Initializable {
     }
 
     //=============================================
+    // ====================Medicine==================
+    public void addMedicine(){
+
+        //thông báo đăng nhập thành công và trờ về trang chủ
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("upMe.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            //ẩn trang cũ
+            add_btl_Me.getScene().getWindow().hide();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void search_nameMe(){
+        String id ;
+        Data da = new Data();
+        String check = "select medicine.idMe from medicine where medicine.nameMedi = '"+search_Me.getText()+"';";
+        try {
+            ResultSet checkdata = da.ExcuteQueryGetTable(check) ;
+            if(checkdata.next()){
+                id = checkdata.getString("idMe");
+                String sql = "SELECT medicine.idMe, medicine.nameMedi,medicine.price, medicine.location,\n" +
+                        "detail_me.quantity, detail_me.id_lo, detail_me.expiry, detail_me.idSup\n" +
+                        "FROM nhathuocdb.medicine\n" +
+                        "join nhathuocdb.detail_me on medicine.idMe = detail_me.idMe\n" +
+                        "where medicine.idMe = '"+id+"';";
+                ObservableList<Medicine> list = FXCollections.observableArrayList();
+                ResultSet rs = da.ExcuteQueryGetTable(sql);
+                while(rs.next()){
+                    Medicine me = new Medicine();
+                    me.setIdMe(rs.getString("idMe"));
+                    me.setNameMe(rs.getString("nameMedi"));
+                    me.setIdSup(rs.getString("idSup"));
+                    me.setPrice(Integer.parseInt(rs.getString("price")));
+                    me.setLocation(rs.getString("location"));
+                    me.setQuantity(Integer.parseInt(rs.getString("quantity")));
+                    me.setExpiry(Date.valueOf(rs.getString("expiry")));
+                    me.setMalo(rs.getString("id_lo"));
+                    list.add(me);
+
+                }
+                if (!list.isEmpty()) {
+                    col_idMe.setCellValueFactory(new PropertyValueFactory<>("idMe"));
+                    col_nameMe.setCellValueFactory(new PropertyValueFactory<>("nameMe"));
+                    col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                    col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+                    col_location.setCellValueFactory(new PropertyValueFactory<>("location"));
+                    col_expiry.setCellValueFactory(new PropertyValueFactory<>("expiry"));
+                    col_idSup_me.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+                    col_malo.setCellValueFactory(new PropertyValueFactory<>("malo"));
+                    col_deleMe.setCellFactory(column -> {
+                        TableCell<Medicine, Void> cellSearch = new TableCell<>() {
+                            FontAwesomeIcon deleIcon_search = new FontAwesomeIcon();
+                            {
+                                // Styling the icon if needed
+                                deleIcon_search.getStyleClass().add("delete-icon");
+                                deleIcon_search.setIconName("TRASH");
+                                deleIcon_search.setSize("20px");
+                                deleIcon_search.setCursor(Cursor.HAND);
+                                deleIcon_search.setFill(Color.RED);
+                                deleIcon_search.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Xác nhận thông tin");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                    Optional<ButtonType> op = alert.showAndWait();
+                                    if(op.get().equals(ButtonType.OK)){
+                                        Medicine medi = tbl_medicine.getSelectionModel().getSelectedItem();
+                                        // Thực hiện hoạt động khi người dùng nhấp vào biểu tượng xóa
+                                        String sql1 = "delete from medicine where idMe ='"+medi.getIdMe()+"';";
+                                        String sql2 = "delete from detail_me where idMe ='"+medi.getIdMe()+"';";
+                                        Data data = new Data();
+                                        data.ExcuteQueryUpdateDB(sql1);
+                                        data.ExcuteQueryUpdateDB(sql2);
+                                        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                        alert1.setTitle("Thông báo");
+                                        alert1.setHeaderText(null);
+                                        alert1.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                        //showStaff();
+                                        noty_search.setVisible(false);
+                                        tbl_medicine.setVisible(false);
+                                        //noty_search.setVisible(false);
+                                    }
+                                });
+                            }
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(deleIcon_search);
+                                }
+                            }
+                        };
+                        return cellSearch;
+                    });
+                    col_upMe.setCellFactory(column -> {
+                        TableCell<Medicine, Void> cellup_Search = new TableCell<>() {
+                            FontAwesomeIcon upIcon_search = new FontAwesomeIcon();
+                            {
+                                // Styling the icon if needed
+                                upIcon_search.getStyleClass().add("up-icon");
+                                upIcon_search.setIconName("PENCIL");
+                                upIcon_search.setSize("20px");
+                                upIcon_search.setCursor(Cursor.HAND);
+                                upIcon_search.setFill(Color.AQUA);
+                                upIcon_search.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    Medicine medi = tbl_medicine.getSelectionModel().getSelectedItem();
+                                    getData.ma = medi.getIdMe()+ " "+ medi.getMalo();
+                                    try {
+                                        Parent root = FXMLLoader.load(getClass().getResource("upMe.fxml"));
+                                        Stage stage = new Stage();
+                                        Scene scene = new Scene(root);
+                                        //ẩn trang cũ
+                                        upIcon_search.getScene().getWindow().hide();
+                                        stage.initStyle(StageStyle.TRANSPARENT);
+                                        stage.setScene(scene);
+                                        stage.show();
+                                        //showStaff();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(upIcon_search);
+                                }
+                            }
+                        };
+                        return cellup_Search;
+                    });
+                    tbl_medicine.setItems(list);
+                    tbl_medicine.setVisible(true);
+                    noty_search.setVisible(false);
+                    search_Me.setText("");
+                } else {
+                    tbl_medicine.setVisible(false);
+                    noty_search.setVisible(true);
+                    search_Me.setText("");
+                }
+            }else {
+                search_Me.setText("");
+                noty_search.setVisible(true);
+                tbl_medicine.setVisible(false);
+
+            }
+
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
+    // =======================Bill===============
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //displayUser();
