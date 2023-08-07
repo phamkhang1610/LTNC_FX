@@ -30,7 +30,7 @@
                <top>
                   <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="semi-top-form" stylesheets="@databroad.css" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="2.0" layoutY="2.0" prefHeight="43.0" prefWidth="1100.0" styleClass="top_form" stylesheets="@databroad.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="1.0">
+                        <AnchorPane layoutX="-63.0" layoutY="11.0" prefHeight="43.0" prefWidth="1100.0" styleClass="top_form" stylesheets="@databroad.css" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="-63.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="11.0">
                            <children>
                               <FontAwesomeIcon iconName="USER_MD" layoutX="14.0" layoutY="31.0" size="2em" />
                               <Label layoutX="48.0" layoutY="12.0" text="Phamacy Management System" textFill="#ad3661">
@@ -271,7 +271,7 @@
                                                       <String fx:value="white-bg" />
                                                    </styleClass>
                                                 </AnchorPane>
-                                                <AnchorPane layoutX="14.0" layoutY="296.0" prefHeight="217.0" prefWidth="896.0" stylesheets="@databroad.css">
+                                                <AnchorPane layoutX="7.0" layoutY="296.0" prefHeight="217.0" prefWidth="896.0" stylesheets="@databroad.css">
                                                    <styleClass>
                                                       <String fx:value="shadow" />
                                                       <String fx:value="white-bg" />
@@ -294,15 +294,17 @@
                                                       <TableView fx:id="tbl_search_staff" layoutX="4.0" layoutY="61.0" prefHeight="146.0" prefWidth="887.0" styleClass="column-header-background" stylesheets="@databroad.css" visible="false">
                                                         <columns>
                                                           <TableColumn fx:id="col_search_idstaff" prefWidth="67.0" text="Staff id" />
-                                                            <TableColumn fx:id="col_search_namestaff" prefWidth="181.0" text="Staff name" />
-                                                            <TableColumn fx:id="col_search_sex" prefWidth="70.0" text="Staff sex" />
-                                                            <TableColumn fx:id="col_search_date" prefWidth="124.0" text="Birthday" />
-                                                            <TableColumn fx:id="col_search_cmnd" prefWidth="115.0" text="CMND" />
-                                                            <TableColumn fx:id="col_search_addre" prefWidth="177.0" text="Address" />
-                                                            <TableColumn fx:id="col_search_sdt" prefWidth="112.0" text="SĐT" />
+                                                            <TableColumn fx:id="col_search_namestaff" prefWidth="163.0" text="Staff name" />
+                                                            <TableColumn fx:id="col_search_sex" prefWidth="79.0" text="Staff sex" />
+                                                            <TableColumn fx:id="col_search_date" prefWidth="115.0" text="Birthday" />
+                                                            <TableColumn fx:id="col_search_cmnd" prefWidth="114.0" text="CMND" />
+                                                            <TableColumn fx:id="col_search_addre" prefWidth="151.0" text="Address" />
+                                                            <TableColumn fx:id="col_search_sdt" prefWidth="96.0" text="SĐT" />
+                                                            <TableColumn fx:id="col_search_dele" prefWidth="50.0" />
+                                                            <TableColumn fx:id="col_search_up" prefWidth="133.0" />
                                                         </columns>
                                                       </TableView>
-                                                      <Label fx:id="label_search" layoutX="294.0" layoutY="82.0" prefHeight="86.0" prefWidth="401.0" text="Có thể bạn nhập sai mã nhân viên hoặc nhân viên không tồn tại" visible="false">
+                                                      <Label fx:id="label_search" layoutX="294.0" layoutY="82.0" prefHeight="86.0" prefWidth="426.0" text="Có thể bạn nhập sai mã nhân viên hoặc mã nhân viên không tồn tại" visible="false">
                                                          <font>
                                                             <Font size="14.0" />
                                                          </font>
@@ -414,9 +416,41 @@
                               </TabPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="medicine_form" prefHeight="557.0" prefWidth="911.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="medicine_form" layoutY="-8.0" prefHeight="557.0" prefWidth="911.0" styleClass="white-bg" stylesheets="@databroad.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0">
                            <children>
-                              <Label layoutX="228.0" layoutY="148.0" text="Medicine">
+                              <Label layoutX="416.0" layoutY="24.0" text="MEDICINE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="17.0" layoutY="44.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="74.0" styleClass="white-bg" stylesheets="@databroad.css" text="Add">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="PLUS_CIRCLE" size="1.2em" text="" />
+                                 </graphic>
+                              </Button>
+                              <Line endX="244.5" endY="-7.0" layoutX="171.0" layoutY="41.0" startX="-171.0" startY="-7.0" />
+                              <Line endX="255.0" endY="-7.0" layoutX="656.0" layoutY="41.0" startX="-171.0" startY="-7.0" />
+                              <AnchorPane layoutX="16.0" layoutY="150.0" prefHeight="407.0" prefWidth="878.0">
+                                 <children>
+                                    <TableView prefHeight="405.0" prefWidth="880.0" stylesheets="@databroad.css">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="C1" />
+                                        <TableColumn prefWidth="75.0" text="C2" />
+                                      </columns>
+                                       <styleClass>
+                                          <String fx:value="tab-header-area" />
+                                          <String fx:value="table-view" />
+                                       </styleClass>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <Button layoutX="91.0" layoutY="44.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="77.0" styleClass="white-bg" text="Reload">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="REPEAT" size="1.2em" />
+                                 </graphic>
+                              </Button>
+                              <TextField layoutX="91.0" layoutY="95.0" promptText="..." />
+                              <Label layoutX="23.0" layoutY="97.0" text="Search">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
