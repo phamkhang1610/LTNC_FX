@@ -11,7 +11,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="552.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.BillController">
    <children>
       <AnchorPane layoutX="511.0" prefHeight="571.0" prefWidth="217.0">
@@ -21,7 +20,7 @@
                   <FontAwesomeIcon iconName="CLOSE" />
                </graphic>
             </Button>
-            <Button fx:id="add_btn_bill" layoutX="174.0" layoutY="180.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
+            <Button fx:id="add_btn_bill" layoutX="174.0" layoutY="180.0" mnemonicParsing="false" onAction="#add_bill" prefHeight="30.0" prefWidth="82.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
             <Line endX="168.0" layoutX="101.0" layoutY="248.0" startX="-100.0" />
             <TextField fx:id="name" layoutX="107.0" layoutY="71.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
             <TextField fx:id="size" layoutX="107.0" layoutY="124.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
@@ -47,7 +46,7 @@
                </font>
             </Label>
             <TextArea fx:id="note" layoutX="108.0" layoutY="357.0" prefHeight="111.0" prefWidth="151.0" />
-            <Button fx:id="pay_btn_bill" layoutX="10.0" layoutY="533.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="251.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Pay">
+            <Button fx:id="pay_btn_bill" layoutX="10.0" layoutY="533.0" mnemonicParsing="false" onAction="#Pay" prefHeight="30.0" prefWidth="251.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Pay">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -66,13 +65,14 @@
       </AnchorPane>
       <AnchorPane layoutY="111.0" prefHeight="571.0" prefWidth="512.0" style="-fx-border-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="271.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TableView fx:id="tbl_bill" layoutX="3.0" layoutY="9.0" prefHeight="571.0" prefWidth="512.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="tbl_bill" layoutX="2.0" layoutY="2.0" prefHeight="569.0" prefWidth="406.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
               <columns>
                 <TableColumn fx:id="col_idme" prefWidth="87.0" text="Mã thuốc" />
-                <TableColumn fx:id="col_nmaeme" prefWidth="143.0" text="Tên thuốc" />
-                  <TableColumn fx:id="col_sl" prefWidth="104.0" text="Số lượng" />
-                  <TableColumn fx:id="col_money" prefWidth="109.0" text="Giá tiền" />
-                  <TableColumn prefWidth="77.0" />
+                <TableColumn fx:id="col_nmaeme" prefWidth="98.0" text="Tên thuốc" />
+                  <TableColumn fx:id="col_sl" prefWidth="101.0" text="Số lượng" />
+                  <TableColumn fx:id="col_money" prefWidth="113.0" text="Giá tiền" />
+                  <TableColumn fx:id="col_dele" prefWidth="53.0" text="Xóa" />
+                  <TableColumn fx:id="col_fix" prefWidth="52.0" text="Sửa" />
               </columns>
             </TableView>
          </children>

@@ -25,6 +25,9 @@
 .nav-form{
     -fx-background-color: linear-gradient(to bottom right, #FFC1C1,  #FF6EB4,#633364);
 }
+.table-cell {
+    -fx-alignment: center;
+}
 .nav-btn{
     -fx-background-color: transparent;
     -fx-cursor: hand;
@@ -35,6 +38,9 @@
     -fx-alignment: CENTER-LEFT;
 }
 .nav-btn:hover{
+    -fx-background-color: #EE1289;
+}
+.nav-btn:focused{
     -fx-background-color: #EE1289;
 }
 .shadow{
@@ -64,7 +70,6 @@
 .table-view .column-header-background {
     -fx-background-color: linear-gradient(to bottom right, #FFC1C1,  #FF6EB4,#633364);
     -fx-background-radius: 8px 8px 0px 0px;
-
     -fx-background-insets: 0 0 0 0;
 }
 .table-view.column-header,.filter{
