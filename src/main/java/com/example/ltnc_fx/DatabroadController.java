@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.input.MouseEvent;
@@ -906,11 +907,11 @@ public class DatabroadController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //displayUser();
-        showStaff();
-        add_list_sex();
+//        showStaff();
+//        add_list_sex();
         InserSupplierToTable1();
-    }
 
+    }
 
     //region nha cung cap
     public void InserSupplierToTable1()  {
@@ -980,12 +981,15 @@ public class DatabroadController implements Initializable {
                             Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
-                            //ẩn trang cũ
-                            upIcon.getScene().getWindow().hide();
-                            stage.initStyle(StageStyle.TRANSPARENT);
+
+                            stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+                                InserSupplierToTable1();
+                            });
+
                             stage.show();
-                            InserSupplierToTable1();
 
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -1007,9 +1011,43 @@ public class DatabroadController implements Initializable {
             return cellup;
         });
         ncc_1_tbl.setItems(suppliers);
-
-
+    }
+    public void addNCC(ActionEvent event){
+        String id = ncc_2_id.getText();
+        String name = ncc_2_name.getText();
+        String sdt = ncc_2_numberphone.getText();
+        String address = ncc_2_adress.getText();
+        if(id.isEmpty()||name.isEmpty()||sdt.isEmpty()||address.isEmpty()){
+            erro("Vui lòng nhập đủ thông tin");
+        }
+        else {
+            SupplierService service = new SupplierService();
+            service.add(id,name,sdt,address);
+            noti("Success");
+            InserSupplierToTable1();
+        }
+    }
+    public void resetNCC(ActionEvent event){
+         ncc_2_id.setText("");
+         ncc_2_name.setText("");
+         ncc_2_numberphone.setText("");
+         ncc_2_adress.setText("");
+    }
+    public void searchSup(ActionEvent event){
+        String keySearch = ncc_2_search.getText();
+        SupplierService services = new SupplierService();
+        List<Supplier> listt = services.getBySearch(keySearch);
+        ObservableList<Supplier> suppliers = FXCollections.observableList(listt);
+        if(listt.size()<1){
+            noti("Không tìm thấy");
+        }
+        ncc_2_tbl_id.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+        ncc_2_tbl_name.setCellValueFactory(new PropertyValueFactory<>("nameSup"));
+        ncc_2_tbl_sdt.setCellValueFactory(new PropertyValueFactory<>("sdtSup"));
+        ncc_2_tbl_adress.setCellValueFactory(new PropertyValueFactory<>("addresSup"));
+        ncc_2_tbl.setItems(suppliers);
     }
     //endregion
+
 
 }

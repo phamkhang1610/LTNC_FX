@@ -7,12 +7,10 @@ import java.util.List;
 
 public class Test {
     public static void main(String[] args){
-        SupplierService sr = new SupplierService();
-        List<Supplier> rs = sr.getAll();
+
         try {
-            for(Supplier r : rs){
-                System.out.println(r.getNameSup());
-            }
+           SupplierService service = new SupplierService();
+
         }
         catch (Exception ex){
 

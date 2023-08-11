@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.UpSupplierController">
    <children>
       <AnchorPane layoutX="5.0" layoutY="14.0" prefHeight="386.0" prefWidth="326.0">
@@ -16,8 +15,8 @@
             <Text layoutX="35.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên: " />
             <Text layoutX="27.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa chỉ: " />
             <Text layoutX="34.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sđt: " wrappingWidth="51.441802978515625" />
-            <Button fx:id="save" layoutX="85.0" layoutY="255.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="62.0" style="-fx-background-color: Blue;" text="Save" textFill="WHITE" />
-            <Button fx:id="cancel" layoutX="187.0" layoutY="255.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="62.0" text="Cancel" />
+            <Button fx:id="save" layoutX="85.0" layoutY="255.0" mnemonicParsing="false" onAction="#update" prefHeight="26.0" prefWidth="62.0" style="-fx-background-color: Blue;" text="Save" textFill="WHITE" />
+            <Button fx:id="cancel" layoutX="187.0" layoutY="255.0" mnemonicParsing="false" onAction="#cancelUpdate" prefHeight="26.0" prefWidth="62.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>
