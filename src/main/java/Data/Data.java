@@ -23,6 +23,14 @@ public class Data {
             System.out.println(ex.toString());
         }
     }
+    public void Close() {
+        try{
+            conn.close();
+        }
+        catch (Exception ex){
+
+        }
+    }
     //login
     public ResultSet login(String sql,String username, String password){
         try{
