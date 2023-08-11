@@ -1,7 +1,11 @@
 package com.example.ltnc_fx;
 
 import Data.Data;
-import Model.*;
+import Model.Medicine;
+import Model.Staff;
+import Model.Supplier;
+import Model.getData;
+import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.input.MouseEvent;
@@ -31,15 +36,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
     @FXML
     private Button add_bill;
+    //region setup
     @FXML
     private Button groupMedicine;
     @FXML
@@ -206,6 +209,74 @@ public class DatabroadController implements Initializable {
     private Button reload_me;
     @FXML
     private TableColumn<?, ?> col_malo;
+    // endregion
+
+    //region Nha cung cap
+    @FXML
+    private Tab ncc_1;
+    @FXML
+    private TableView<Supplier> ncc_1_tbl;
+    @FXML
+    private TableView<Supplier> ncc_2_tbl;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_adress;
+
+
+    @FXML
+    private TableColumn<Supplier, Void> ncc_1_tbl_deletea;
+
+    @FXML
+    private TableColumn<Supplier, Void> ncc_1_tbl_edita;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_id;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_name;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_sdt;
+
+    @FXML
+    private Tab ncc_2;
+
+    @FXML
+    private TextField ncc_2_adress;
+
+    @FXML
+    private TextField ncc_2_id;
+
+    @FXML
+    private TextField ncc_2_name;
+
+    @FXML
+    private TextField ncc_2_numberphone;
+
+    @FXML
+    private Button ncc_2_reset;
+
+    @FXML
+    private TextField ncc_2_search;
+
+    @FXML
+    private FontAwesomeIcon ncc_2_searchaction;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_adress;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_id;
+
+    @FXML
+    private TableColumn<Supplier, String>ncc_2_tbl_name;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_sdt;
+
+    @FXML
+    private Button ncc_2_them;
+    // endregion
     //================================== hóa đơn===============
     @FXML
     private TableColumn<Bill,Void> col_bill_chitiet;
@@ -252,6 +323,7 @@ public class DatabroadController implements Initializable {
     @FXML
     private DatePicker search_bill_date;
     // bắt đầu điều khiển
+    //region phamkhang
     public void erro(String err){
         Alert alert;
         alert = new Alert(Alert.AlertType.ERROR);
@@ -311,7 +383,12 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(false);
             medicine_form.setVisible(false);
             supplier_form.setVisible(true);
-
+            supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
+            dash.setStyle("-fx-background-color: transparent");
+            medicine.setStyle("-fx-background-color: transparent");
+            bill.setStyle("-fx-background-color: transparent");
+            staff.setStyle("-fx-background-color: transparent");
+            InserSupplierToTable1();
         }
     }
 
@@ -836,6 +913,7 @@ public class DatabroadController implements Initializable {
         }catch (Exception e){e.printStackTrace();}
 
     }
+    //endregion
 
     // =======================Bill===============
     public void addBill(){
@@ -1092,4 +1170,150 @@ public class DatabroadController implements Initializable {
         //Stage stage = (Stage) colse.getScene().getWindow();
         //stage.setScene(getData.current);
     }
+}
+//        showStaff();
+//        add_list_sex();
+        InserSupplierToTable1();
+
+    }
+
+    //region nha cung cap
+    public void InserSupplierToTable1()  {
+        SupplierService supplierService = new SupplierService();
+        ObservableList<Supplier> suppliers = FXCollections.observableList(supplierService.getAll());
+
+        ncc_1_tbl_id.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+        ncc_1_tbl_name.setCellValueFactory(new PropertyValueFactory<>("nameSup"));
+        ncc_1_tbl_adress.setCellValueFactory(new PropertyValueFactory<>("addresSup"));
+        ncc_1_tbl_sdt.setCellValueFactory(new PropertyValueFactory<>("sdtSup"));
+        ncc_1_tbl_deletea.setCellFactory(column -> {
+            TableCell<Supplier, Void> cell = new TableCell<>() {
+                FontAwesomeIcon deleIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    deleIcon.getStyleClass().add("delete-icon");
+                    deleIcon.setIconName("TRASH");
+                    deleIcon.setSize("20px");
+                    deleIcon.setCursor(Cursor.HAND);
+                    deleIcon.setFill(Color.RED);
+                    deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Xác nhận thông tin");
+                        alert.setHeaderText(null);
+                        alert.setContentText("bạn chắc chắn muốn xóa chứ?");
+                        Optional<ButtonType> op = alert.showAndWait();
+                        if(op.get().equals(ButtonType.OK)){
+                            Supplier supplierState = ncc_1_tbl.getSelectionModel().getSelectedItem();
+                            // Thực hiện hoạt động khi người dùng nhấp vào biểu tượng xóa
+                            String sql = "delete from supplier where idSup ='"+supplierState.getIdSup()+"';";
+                            Data data = new Data();
+                            data.ExcuteQueryUpdateDB(sql);
+                            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                            alert1.setTitle("THông báo");
+                            alert1.setHeaderText(null);
+                            alert1.setContentText("Success");
+                            InserSupplierToTable1();
+                        }
+                    });
+                }
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(deleIcon);
+                    }
+                }
+            };
+            return cell;
+        });
+        ncc_1_tbl_edita.setCellFactory(column -> {
+            TableCell<Supplier, Void> cellup = new TableCell<>() {
+                FontAwesomeIcon upIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    upIcon.getStyleClass().add("up-icon");
+                    upIcon.setIconName("PENCIL");
+                    upIcon.setSize("20px");
+                    upIcon.setCursor(Cursor.HAND);
+                    upIcon.setFill(Color.AQUA);
+                    upIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        Supplier supplierState = ncc_1_tbl.getSelectionModel().getSelectedItem();
+                        getData.supplier = supplierState;
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
+
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+                                InserSupplierToTable1();
+                            });
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(upIcon);
+                    }
+                }
+            };
+            return cellup;
+        });
+        ncc_1_tbl.setItems(suppliers);
+        UUID uuid1 = UUID.randomUUID();
+        ncc_2_id.setText(uuid1+"");
+    }
+    public void addNCC(ActionEvent event){
+        String id = ncc_2_id.getText();
+        String name = ncc_2_name.getText();
+        String sdt = ncc_2_numberphone.getText();
+        String address = ncc_2_adress.getText();
+        if(id.isEmpty()||name.isEmpty()||sdt.isEmpty()||address.isEmpty()){
+            erro("Vui lòng nhập đủ thông tin");
+        }
+        else {
+            SupplierService service = new SupplierService();
+            service.add(id,name,sdt,address);
+            noti("Success");
+            InserSupplierToTable1();
+        }
+    }
+    public void resetNCC(ActionEvent event){
+         UUID uuid1 = UUID.randomUUID();
+         ncc_2_id.setText(uuid1+"");
+         ncc_2_name.setText("");
+         ncc_2_numberphone.setText("");
+         ncc_2_adress.setText("");
+    }
+    public void searchSup(ActionEvent event){
+        String keySearch = ncc_2_search.getText();
+        SupplierService services = new SupplierService();
+        List<Supplier> listt = services.getBySearch(keySearch);
+        ObservableList<Supplier> suppliers = FXCollections.observableList(listt);
+        if(listt.size()<1){
+            noti("Không tìm thấy");
+        }
+        ncc_2_tbl_id.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+        ncc_2_tbl_name.setCellValueFactory(new PropertyValueFactory<>("nameSup"));
+        ncc_2_tbl_sdt.setCellValueFactory(new PropertyValueFactory<>("sdtSup"));
+        ncc_2_tbl_adress.setCellValueFactory(new PropertyValueFactory<>("addresSup"));
+        ncc_2_tbl.setItems(suppliers);
+    }
+    //endregion
+
 }

@@ -11,11 +11,12 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("databroad.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         // ẩn thanh trên để tự tạo
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setTitle("Hello!");
+        stage.setTitle("Quan ly hieu thuoc");
         stage.setScene(scene);
         stage.show();
     }
