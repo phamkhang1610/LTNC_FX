@@ -1027,7 +1027,8 @@ public class DatabroadController implements Initializable {
         }
     }
     public void resetNCC(ActionEvent event){
-         ncc_2_id.setText("");
+         UUID uuid1 = UUID.randomUUID();
+         ncc_2_id.setText(uuid1+"");
          ncc_2_name.setText("");
          ncc_2_numberphone.setText("");
          ncc_2_adress.setText("");
