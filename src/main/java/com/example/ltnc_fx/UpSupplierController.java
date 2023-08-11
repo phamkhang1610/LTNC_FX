@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UpSupplierController implements Initializable {
-    private DatabroadController databroadController;
 
     @FXML
     private Button cancel;
@@ -65,7 +64,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
             else {
                 boolean rs = service.upDate(getData.supplier.getIdSup(),name,sdt,address);
                 if (rs == true) {
-                    save.getScene().getWindow().hide();
+
                     noti("Succes");
                 } else {
                     erro("Faild!");
@@ -74,6 +73,9 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         }
         catch (Exception ex){
 
+        }
+        finally {
+            cancel.getScene().getWindow().hide();
         }
 
     }

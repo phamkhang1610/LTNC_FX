@@ -36,10 +36,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
@@ -1011,6 +1008,8 @@ public class DatabroadController implements Initializable {
             return cellup;
         });
         ncc_1_tbl.setItems(suppliers);
+        UUID uuid1 = UUID.randomUUID();
+        ncc_2_id.setText(uuid1+"");
     }
     public void addNCC(ActionEvent event){
         String id = ncc_2_id.getText();
@@ -1048,6 +1047,5 @@ public class DatabroadController implements Initializable {
         ncc_2_tbl.setItems(suppliers);
     }
     //endregion
-
 
 }
