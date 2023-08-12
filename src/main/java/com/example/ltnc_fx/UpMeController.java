@@ -2,6 +2,7 @@ package com.example.ltnc_fx;
 
 import Data.Data;
 import Model.Medicine;
+import Model.Type;
 import Model.getData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +34,7 @@ public class UpMeController implements Initializable {
     @FXML
     private TextField price;
     @FXML
-    private ComboBox<?> category;
+    private ComboBox<String> category;
 
     @FXML
     private Button colse;
@@ -87,14 +88,37 @@ public class UpMeController implements Initializable {
         alert.showAndWait();
     }
     private Image image;
-    private String[] categorylist ={"Thực phẩm chức năng","Thuốc bổ", "Thuốc chữa bệnh"};
-    public void add_list_category(){
-        List<String> li = new ArrayList<>();
-        for (String a: categorylist){
-            li.add(a);
+    private ObservableList<Type> list=FXCollections.observableArrayList() ;
+    public String get_id_category(String s){
+        String id=null;
+        for(Type t: list){
+            if(s==t.getNameType()){
+                id = t.getIdType();
+                break;
+            }
         }
-        ObservableList list = FXCollections.observableArrayList(li);
-        category.setItems(list);
+        return id;
+    }
+    public void add_list_category(){
+        String sql = "select * from groupmedi";
+        Type type;
+        ObservableList<String> li=FXCollections.observableArrayList();
+        Data data = new Data() ;
+        try{
+
+            ResultSet rs = data.ExcuteQueryGetTable(sql);
+            while(rs.next()){
+                type = new Type(rs.getString("id_group"),rs.getString("name_group"),rs.getString("locationG"),rs.getString("describeG"));
+                list.add(type);
+            }
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+        for(Type t:list){
+            li.add(t.getNameType());
+        }
+
+        category.setItems(li);
     }
     public void close(){
         try{
@@ -109,6 +133,7 @@ public class UpMeController implements Initializable {
             stage.setScene(scene);
             stage.show();
             getData.ma = null;
+            getData.state = "medicine";
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -140,7 +165,7 @@ public class UpMeController implements Initializable {
 
             try{
                 String checkData = "select nameMedi from medicine where nameMedi = '"
-                        +nameMe.getText()+"'";
+                        +nameMe.getText()+"' or idMe='"+idMe.getText()+"'";
                 ResultSet rs = data.ExcuteQueryGetTable(checkData);
                 if(rs.next()){
                     erro("Thuốc "+ nameMe.getText()+" đã tồn tại");
@@ -151,7 +176,7 @@ public class UpMeController implements Initializable {
                     me.setLocation(location.getText());
                     me.setNote(note.getText());
                     me.setPrice(Integer.parseInt(price.getText()));
-                    me.setIdType((String) category.getSelectionModel().getSelectedItem());
+                    me.setIdType(get_id_category((String) category.getSelectionModel().getSelectedItem()));
                     String uri = getData.path;
                     uri = uri.replace("\\","\\\\");
                     me.setImage(uri);
@@ -159,7 +184,7 @@ public class UpMeController implements Initializable {
                             +"','"+me.getNote()+"','"+me.getPrice()+"','"+me.getLocation()+"','"+me.getImage()+"')";
                     data.ExcuteQueryUpdateDB(sql);
 
-                    String khoi = "INSERT INTO `nhathuocdb`.`detail_me` (`idMe`, `id_lo`, `quantity`, `idSup`, `expiry`) VALUES ('"+me.getIdMe()+"', '0', '0', '0', '0000-01-1');";
+                    String khoi = "INSERT INTO detail_me (idMe, id_lo, quantity, idSup, expiry) VALUES ('"+me.getIdMe()+"', 'null', 0, 'null', '2020-01-01');";
                     data.ExcuteQueryUpdateDB(khoi);
                     noti("Thêm thuốc mới thành công");
                     reset();
@@ -170,19 +195,20 @@ public class UpMeController implements Initializable {
             }
         }
     }
-    public void showData(){
-        if(getData.ma == null){
+    public void showData() {
+        if (getData.ma == null) {
             ///
-        }else{
+        } else {
             String[] mang = getData.ma.split(" ");
             up_select.setVisible(true);
+            add_btn_me.setVisible(false);
             Data data = new Data();
-            try{
-                String sql1 = "select * from medicine where idMe ='"+mang[0]+"';";
-                String sql2 = "select * from detail_me where idMe ='"+mang[0]+"'and id_lo ='"+mang[1]+"';";
+            try {
+                String sql1 = "select * from medicine where idMe ='" + mang[0] + "';";
+                String sql2 = "select * from detail_me where idMe ='" + mang[0] + "'and id_lo ='" + mang[1] + "';";
                 ResultSet rs1 = data.ExcuteQueryGetTable(sql1);
                 ResultSet rs2 = data.ExcuteQueryGetTable(sql2);
-                while (rs1.next() && rs2.next()){
+                while (rs1.next() && rs2.next()) {
                     idMe.setText(rs1.getString("idMe"));
                     nameMe.setText(rs1.getString("nameMedi"));
                     location.setText(rs1.getString("location"));
@@ -191,15 +217,14 @@ public class UpMeController implements Initializable {
                     quantity.setText(rs2.getString("quantity"));
                     expiry.setText(rs2.getString("expiry"));
                     id_up_supme.setText(rs2.getString("idSup"));
-                    image = new Image(rs1.getString("image").toString(),167,190,false,true);
+                    image = new Image(rs1.getString("image").toString(), 167, 190, false, true);
                     image_Me.setImage(image);
                     getData.path = rs1.getString("image");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
     public void upMe(){
         Data data = new Data();
@@ -214,7 +239,7 @@ public class UpMeController implements Initializable {
                 me.setLocation(location.getText());
                 me.setNote(note.getText());
                 me.setPrice(Integer.parseInt(price.getText()));
-                me.setIdType((String) category.getSelectionModel().getSelectedItem());
+                me.setIdType(get_id_category((String) category.getSelectionModel().getSelectedItem()));
                 me.setQuantity(Integer.parseInt(quantity.getText()));
                 me.setExpiry(Date.valueOf(expiry.getText()));
                 me.setIdSup(id_up_supme.getText());
