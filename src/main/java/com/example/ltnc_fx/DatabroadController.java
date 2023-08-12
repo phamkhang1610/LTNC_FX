@@ -1,10 +1,7 @@
 package com.example.ltnc_fx;
 
 import Data.Data;
-import Model.Medicine;
-import Model.Staff;
-import Model.Supplier;
-import Model.getData;
+import Model.*;
 import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -1167,10 +1164,6 @@ public class DatabroadController implements Initializable {
             supplier_form.setVisible(false);
 
         }
-        //Stage stage = (Stage) colse.getScene().getWindow();
-        //stage.setScene(getData.current);
-    }
-}
 //        showStaff();
 //        add_list_sex();
         InserSupplierToTable1();
@@ -1278,6 +1271,7 @@ public class DatabroadController implements Initializable {
         UUID uuid1 = UUID.randomUUID();
         ncc_2_id.setText(uuid1+"");
     }
+
     public void addNCC(ActionEvent event){
         String id = ncc_2_id.getText();
         String name = ncc_2_name.getText();
