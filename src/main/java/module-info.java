@@ -8,4 +8,6 @@ module com.example.ltnc_fx {
     opens com.example.ltnc_fx to javafx.fxml;
     exports com.example.ltnc_fx;
     opens Model to javafx.base ;
+    exports test;
+    opens test to javafx.fxml;
 }

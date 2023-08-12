@@ -17,6 +17,10 @@ public class Detail_Me {
         this.quantity = quan;
         this.expiry = ex;
     }
+    public void subsize(int c){
+        this.quantity= this.quantity - c;
+
+    }
     public String getIdMe() {
         return idMe;
     }

@@ -18,7 +18,7 @@
       </Button>
       <Button fx:id="up_btl_me" layoutX="428.0" layoutY="417.0" mnemonicParsing="false" onAction="#upMe" prefHeight="36.0" prefWidth="92.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Update">
          <graphic>
-            <FontAwesomeIcon iconName="REPEAT" size="1.2em" />
+            <FontAwesomeIcon iconName="REPEAT" size="1.2em" text="" />
          </graphic>
       </Button>
       <Label layoutX="14.0" layoutY="45.0" text="ID thuốc: " textFill="#070707" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="45.0">

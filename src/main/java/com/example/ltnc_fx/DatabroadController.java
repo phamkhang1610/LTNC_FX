@@ -1,10 +1,8 @@
 package com.example.ltnc_fx;
 
 import Data.Data;
-import Model.Medicine;
-import Model.Staff;
-import Model.Type;
-import Model.getData;
+import Model.*;
+import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.input.MouseEvent;
@@ -35,13 +34,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
+    @FXML
+    private Button add_bill;
+    //region setup
     @FXML
     private Button groupMedicine;
     @FXML
@@ -93,77 +92,54 @@ public class DatabroadController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> col_size_bill;
-
     @FXML
     private TableColumn<?, ?> col_type_bill;
-
     @FXML
     private Button colse;
-
     @FXML
     private Button dash;
-
     @FXML
     private AreaChart<?, ?> dash_chart;
-
     @FXML
     private AnchorPane dash_form;
-
     @FXML
     private DatePicker date_staff;
-
     @FXML
     private Button de_btn_staff;
-
     @FXML
     private TextArea ghi_bill;
-
     @FXML
     private TextField id_medicine_bill;
-
     @FXML
     private TextField id_staff;
-
     @FXML
     private TextField id_staff_bill;
-
     @FXML
     private Button medicine;
-
     @FXML
     private Button mini;
-
     @FXML
     private TextField name_medicine_bill;
-
     @FXML
     private TextField name_staff;
-
     @FXML
     private Button pay_btn_bill;
-
     @FXML
     private Button re_btn_staff;
-
     @FXML
     private TextField sdt_staff;
     @FXML
     private  TextField search_type;
     @FXML
     private ComboBox<?> sex_staff;
-
     @FXML
     private ComboBox<?> size_medicine_bill;
-
     @FXML
     private Button staff;
-
     @FXML
     private AnchorPane staff_form;
     @FXML
     private Button supplier;
-    @FXML
-    private TableView<?> tbl_bill;
     @FXML
     private TableView<Staff> tbl_search_staff;
     @FXML
@@ -255,7 +231,121 @@ public class DatabroadController implements Initializable {
     private TableColumn<Type, String> id_type_column;
     @FXML
     private TableColumn<?, ?> col_malo;
+    // endregion
+
+    //region Nha cung cap
+    @FXML
+    private Tab ncc_1;
+    @FXML
+    private TableView<Supplier> ncc_1_tbl;
+    @FXML
+    private TableView<Supplier> ncc_2_tbl;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_adress;
+
+
+    @FXML
+    private TableColumn<Supplier, Void> ncc_1_tbl_deletea;
+
+    @FXML
+    private TableColumn<Supplier, Void> ncc_1_tbl_edita;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_id;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_name;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_1_tbl_sdt;
+
+    @FXML
+    private Tab ncc_2;
+
+    @FXML
+    private TextField ncc_2_adress;
+
+    @FXML
+    private TextField ncc_2_id;
+
+    @FXML
+    private TextField ncc_2_name;
+
+    @FXML
+    private TextField ncc_2_numberphone;
+
+    @FXML
+    private Button ncc_2_reset;
+
+    @FXML
+    private TextField ncc_2_search;
+
+    @FXML
+    private FontAwesomeIcon ncc_2_searchaction;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_adress;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_id;
+
+    @FXML
+    private TableColumn<Supplier, String>ncc_2_tbl_name;
+
+    @FXML
+    private TableColumn<Supplier, String> ncc_2_tbl_sdt;
+
+    @FXML
+    private Button ncc_2_them;
+    // endregion
+    //================================== hóa đơn===============
+    @FXML
+    private TableColumn<Bill,Void> col_bill_chitiet;
+    @FXML
+    private TableColumn<Bill,String> col_bill_date;
+    @FXML
+    private TableColumn<Bill,String> col_bill_id;
+    @FXML
+    private TableColumn<Bill,String> col_bill_idMe;
+    @FXML
+    private TableColumn<Bill,String> col_bill_money;
+    @FXML
+    private TableColumn<Bill,String>col_bill_note;
+    @FXML
+    private TableView<Bill> tbl_bill_search;
+    @FXML
+    private Button search_bill;
+    @FXML
+    private TextField search_bill_idMe;
+    @FXML
+    private TableColumn<Detail_bill,String> col_idme;
+    @FXML
+    private TableColumn<Detail_bill,String> col_money;
+    @FXML
+    private TableColumn<Detail_bill,String> col_nmaeme;
+    @FXML
+    private TableColumn<Detail_bill,String> col_sl;
+    @FXML
+    private TableView<Detail_bill> tbl_bill;
+    @FXML
+    private AnchorPane chitiet_bill;
+    @FXML
+    private Label chitiet_bill_date;
+    @FXML
+    private Label chitiet_bill_idbill;
+    @FXML
+    private Label chitiet_bill_idstaff;
+    @FXML
+    private Label chitiet_bill_note;
+    @FXML
+    private Label chitiet_bill_total;
+    @FXML
+    private Label noti_search_bill;
+    @FXML
+    private DatePicker search_bill_date;
     // bắt đầu điều khiển
+    //region phamkhang
     public void erro(String err){
         Alert alert;
         alert = new Alert(Alert.AlertType.ERROR);
@@ -284,11 +374,7 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
             group_medicine_form.setVisible(false);
-            dash.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            staff.setStyle("-fx-background-color: transparent");
-            medicine.setStyle("-fx-background-color: transparent");
-            bill.setStyle("-fx-background-color: transparent");
-            supplier.setStyle("-fx-background-color: transparent");
+
         } else if (event.getSource() == staff) {
             dash_form.setVisible(false);
             staff_form.setVisible(true);
@@ -296,11 +382,6 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
             group_medicine_form.setVisible(false);
-            staff.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            dash.setStyle("-fx-background-color: transparent");
-            medicine.setStyle("-fx-background-color: transparent");
-            bill.setStyle("-fx-background-color: transparent");
-            supplier.setStyle("-fx-background-color: transparent");
             showStaff();
             add_list_sex();
             label_search.setVisible(false);
@@ -312,12 +393,6 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(true);
             supplier_form.setVisible(false);
             group_medicine_form.setVisible(false);
-            medicine.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            dash.setStyle("-fx-background-color: transparent");
-            bill.setStyle("-fx-background-color: transparent");
-            staff.setStyle("-fx-background-color: transparent");
-            supplier.setStyle("-fx-background-color: transparent");
-            ///
             tbl_medicine.setVisible(false);
             noty_search.setVisible(false);
         } else if (event.getSource() == bill) {
@@ -327,11 +402,7 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
             group_medicine_form.setVisible(false);
-            bill.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            dash.setStyle("-fx-background-color: transparent");
-            medicine.setStyle("-fx-background-color: transparent");
-            staff.setStyle("-fx-background-color: transparent");
-            supplier.setStyle("-fx-background-color: transparent");
+
         } else if (event.getSource() == supplier) {
             dash_form.setVisible(false);
             staff_form.setVisible(false);
@@ -344,6 +415,7 @@ public class DatabroadController implements Initializable {
             medicine.setStyle("-fx-background-color: transparent");
             bill.setStyle("-fx-background-color: transparent");
             staff.setStyle("-fx-background-color: transparent");
+            InserSupplierToTable1();
         }else if (event.getSource() == groupMedicine) {
             dash_form.setVisible(false);
             staff_form.setVisible(false);
@@ -351,12 +423,7 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
             group_medicine_form.setVisible(true);
-            initalTableValue();
-            supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            dash.setStyle("-fx-background-color: transparent");
-            medicine.setStyle("-fx-background-color: transparent");
-            bill.setStyle("-fx-background-color: transparent");
-            staff.setStyle("-fx-background-color: transparent");
+            initalTableValue();           
         }
     }
 
@@ -455,10 +522,7 @@ public class DatabroadController implements Initializable {
                                 String sql = "delete from staff where idStaff ='"+staff.getIdStaff()+"';";
                                 Data data = new Data();
                                 data.ExcuteQueryUpdateDB(sql);
-                                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-                                alert1.setTitle("THông báo");
-                                alert1.setHeaderText(null);
-                                alert1.setContentText("bạn chắc chắn muốn xóa chứ?");
+                                noti("Xóa thành công");
                                 showStaff();
                             }
 
@@ -651,14 +715,27 @@ public class DatabroadController implements Initializable {
                                 Staff staff = tbl_search_staff.getSelectionModel().getSelectedItem();
                                 getData.user = staff.getIdStaff();
                                 try {
+                                    // Lưu lại scene hiện tại
+                                    Scene currentScene = upIcon_search.getScene();
+                                    getData.current = currentScene;
+                                    // Đóng stage hiện tại
+                                    Stage currentStage = (Stage) upIcon_search.getScene().getWindow();
+                                    currentStage.close();
+                                    // Mở trang mới
                                     Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
                                     Stage stage = new Stage();
                                     Scene scene = new Scene(root);
-                                    //ẩn trang cũ
-                                    upIcon_search.getScene().getWindow().hide();
                                     stage.initStyle(StageStyle.TRANSPARENT);
                                     stage.setScene(scene);
                                     stage.show();
+//                                    Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
+//                                    Stage stage = new Stage();
+//                                    Scene scene = new Scene(root);
+//                                    //ẩn trang cũ
+//                                    upIcon_search.getScene().getWindow().hide();
+//                                    stage.initStyle(StageStyle.TRANSPARENT);
+//                                    stage.setScene(scene);
+//                                    stage.show();
                                     showStaff();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
@@ -709,6 +786,7 @@ public class DatabroadController implements Initializable {
 
     //=============================================
     // ====================Medicine==================
+
     public void addMedicine(){
 
         //thông báo đăng nhập thành công và trờ về trang chủ
@@ -731,7 +809,7 @@ public class DatabroadController implements Initializable {
     public void search_nameMe(){
         String id ;
         Data da = new Data();
-        String check = "select medicine.idMe from medicine where medicine.nameMedi = '"+search_Me.getText()+"';";
+        String check = "select medicine.idMe from medicine where nameMedi like  '%"+search_Me.getText()+"%';";
         try {
             ResultSet checkdata = da.ExcuteQueryGetTable(check) ;
             if(checkdata.next()){
@@ -910,6 +988,7 @@ public class DatabroadController implements Initializable {
                 delete_type_column.setCellFactory(column -> {
                     TableCell<Type, Void> delete_cell = new TableCell<>() {
                         FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
+    //endregion
 
                         {
                             deleteIcon.getStyleClass().add("delete-icon");
@@ -1113,10 +1192,401 @@ public class DatabroadController implements Initializable {
         }
     }
     // =======================Bill===============
+    public void addBill(){
+
+        //thông báo đăng nhập thành công và trờ về trang chủ
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("bill.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            //ẩn trang cũ
+            //add_bill.getScene().getWindow().hide();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    private ObservableList<Bill> list_bill_searh = FXCollections.observableArrayList();
+    public void search_bill(){
+        Data data = new Data();
+        list_bill_searh.clear();
+        if(search_bill_idMe.getText().isEmpty() && search_bill_date.getValue() == null){
+            noti("Chưa điền thông tin");
+        } else if (!search_bill_idMe.getText().isEmpty() && search_bill_date.getValue() == null) {
+            try {
+                tbl_bill.setVisible(false);
+                chitiet_bill.setVisible(false);
+                noti_search_bill.setVisible(false);
+                tbl_bill_search.setVisible(false);
+                Bill bill;
+                String sql = "select * from bill where idStaff ='"+search_bill_idMe.getText()+"'";
+                ResultSet rs = data.ExcuteQueryGetTable(sql);
+                while (rs.next()){
+                    bill = new Bill(rs.getString("idBill"),rs.getString("idStaff"),rs.getInt("Total"),rs.getDate("date_create"),rs.getString("note"));
+                    list_bill_searh.add(bill);
+                }
+                if(list_bill_searh.isEmpty()){
+                    noti_search_bill.setVisible(true);
+
+                }else {
+                    tbl_bill_search.setVisible(true);
+                    col_bill_id.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+                    col_bill_idMe.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+                    col_bill_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+                    col_bill_money.setCellValueFactory(new PropertyValueFactory<>("total"));
+                    col_bill_note.setCellValueFactory(new PropertyValueFactory<>("note"));
+                    col_bill_chitiet.setCellFactory(column -> {
+                        TableCell<Bill, Void> cell = new TableCell<>() {
+                            FontAwesomeIcon deleIcon = new FontAwesomeIcon();
+                            {
+                                // Styling the icon if needed
+                                deleIcon.getStyleClass().add("delete-icon");
+                                deleIcon.setIconName("EYE");
+                                deleIcon.setSize("20px");
+                                deleIcon.setCursor(Cursor.HAND);
+                                deleIcon.setFill(Color.AQUA);
+                                deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    Bill b = tbl_bill_search.getSelectionModel().getSelectedItem();
+                                    detailBill(b);
+                                });
+                            }
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(deleIcon);
+                                }
+                            }
+                        };
+                        return cell;
+                    });
+                    tbl_bill_search.setItems(list_bill_searh);
+                    search_bill_idMe.setText("");
+                }
+
+            }catch (Exception ex){ex.printStackTrace();}
+        } else if (!(search_bill_date.getValue() == null) && search_bill_idMe.getText().isEmpty() ) {
+            tbl_bill.setVisible(false);
+            chitiet_bill.setVisible(false);
+            noti_search_bill.setVisible(false);
+            tbl_bill_search.setVisible(false);
+            Bill bill;
+            LocalDate loc = search_bill_date.getValue();
+            Date sqlDate = java.sql.Date.valueOf(loc);
+            try {
+                String sql = "select * from bill where date_create ='"+sqlDate+"'";
+                ResultSet rs = data.ExcuteQueryGetTable(sql);
+                while (rs.next()){
+                    bill = new Bill(rs.getString("idBill"),rs.getString("idStaff"),rs.getInt("Total"),rs.getDate("date_create"),rs.getString("note"));
+                    list_bill_searh.add(bill);
+                }
+                if(list_bill_searh.isEmpty()){
+                    noti_search_bill.setVisible(true);
+                    noti_search_bill.setText("Ngày mà bạn tìm không có hóa đơn nào đuược lập ra");
+
+                }else {
+                    tbl_bill_search.setVisible(true);
+                    col_bill_id.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+                    col_bill_idMe.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+                    col_bill_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+                    col_bill_money.setCellValueFactory(new PropertyValueFactory<>("total"));
+                    col_bill_note.setCellValueFactory(new PropertyValueFactory<>("note"));
+                    col_bill_chitiet.setCellFactory(column -> {
+                        TableCell<Bill, Void> cell = new TableCell<>() {
+                            FontAwesomeIcon deleIcon = new FontAwesomeIcon();
+                            {
+                                // Styling the icon if needed
+                                deleIcon.getStyleClass().add("delete-icon");
+                                deleIcon.setIconName("EYE");
+                                deleIcon.setSize("20px");
+                                deleIcon.setCursor(Cursor.HAND);
+                                deleIcon.setFill(Color.AQUA);
+                                deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    Bill b = tbl_bill_search.getSelectionModel().getSelectedItem();
+                                    detailBill(b);
+                                });
+                            }
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(deleIcon);
+                                }
+                            }
+                        };
+                        return cell;
+                    });
+                    tbl_bill_search.setItems(list_bill_searh);
+                    search_bill_idMe.setText("");
+                    search_bill_date.setValue(null);
+                }
+
+            }catch (Exception ex){ex.printStackTrace();}
+        } else if (!(search_bill_date.getValue() == null) && !search_bill_idMe.getText().isEmpty()) {
+            tbl_bill.setVisible(false);
+            chitiet_bill.setVisible(false);
+            noti_search_bill.setVisible(false);
+            tbl_bill_search.setVisible(false);
+            Bill bill;
+            LocalDate loc = search_bill_date.getValue();
+            Date sqlDate = java.sql.Date.valueOf(loc);
+            try {
+                String sql = "select * from bill where date_create ='"+sqlDate+"' and idStaff ='"+search_bill_idMe.getText()+"'";
+                ResultSet rs = data.ExcuteQueryGetTable(sql);
+                while (rs.next()){
+                    bill = new Bill(rs.getString("idBill"),rs.getString("idStaff"),rs.getInt("Total"),rs.getDate("date_create"),rs.getString("note"));
+                    list_bill_searh.add(bill);
+                }
+                if(list_bill_searh.isEmpty()){
+                    noti_search_bill.setVisible(true);
+
+                }else {
+                    tbl_bill_search.setVisible(true);
+                    col_bill_id.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+                    col_bill_idMe.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+                    col_bill_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+                    col_bill_money.setCellValueFactory(new PropertyValueFactory<>("total"));
+                    col_bill_note.setCellValueFactory(new PropertyValueFactory<>("note"));
+                    col_bill_chitiet.setCellFactory(column -> {
+                        TableCell<Bill, Void> cell = new TableCell<>() {
+                            FontAwesomeIcon deleIcon = new FontAwesomeIcon();
+                            {
+                                // Styling the icon if needed
+                                deleIcon.getStyleClass().add("delete-icon");
+                                deleIcon.setIconName("EYE");
+                                deleIcon.setSize("20px");
+                                deleIcon.setCursor(Cursor.HAND);
+                                deleIcon.setFill(Color.AQUA);
+                                deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    Bill b = tbl_bill_search.getSelectionModel().getSelectedItem();
+                                    detailBill(b);
+                                });
+                            }
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(deleIcon);
+                                }
+                            }
+                        };
+                        return cell;
+                    });
+                    tbl_bill_search.setItems(list_bill_searh);
+                    search_bill_idMe.setText("");
+                    search_bill_date.setValue(null);
+                }
+
+            }catch (Exception ex){ex.printStackTrace();}
+        }
+
+
+    }
+    public void detailBill(Bill bill){
+        Data data = new Data();
+        ObservableList<Detail_bill> list_detaiBill = FXCollections.observableArrayList();
+        noti_search_bill.setVisible(false);
+        tbl_bill_search.setVisible(false);
+        tbl_bill.setVisible(true);
+        chitiet_bill.setVisible(true);
+        chitiet_bill_idbill.setText(bill.getIdBill());
+        chitiet_bill_idstaff.setText(bill.getIdStaff());
+        chitiet_bill_date.setText(String.valueOf(bill.getDate()));
+        chitiet_bill_total.setText(String.valueOf(bill.getTotal()));
+        chitiet_bill_note.setText(bill.getNote());
+        try{
+            String sql = "select * from detailbill where ID_bill = '"+bill.getIdBill()+"'";
+            ResultSet rs = data.ExcuteQueryGetTable(sql);
+            Detail_bill a;
+            while(rs.next()){
+                a=new Detail_bill(rs.getString("ID_bill"),rs.getString("idMe"),rs.getString("nameMedi"),
+                        rs.getInt("quantity"), rs.getInt("money"));
+                list_detaiBill.add(a);
+            }
+            col_idme.setCellValueFactory(new PropertyValueFactory<>("idMe"));
+            col_nmaeme.setCellValueFactory(new PropertyValueFactory<>("nameMe"));
+            col_sl.setCellValueFactory(new PropertyValueFactory<>("size"));
+            col_money.setCellValueFactory(new PropertyValueFactory<>("money"));
+            tbl_bill.setItems(list_detaiBill);
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //displayUser();
         showStaff();
         add_list_sex();
+        if(getData.state == "bill"){
+            dash_form.setVisible(false);
+            staff_form.setVisible(false);
+            bill_form.setVisible(true);
+            medicine_form.setVisible(false);
+            supplier_form.setVisible(false);
+        } else if (getData.state == "medicine") {
+            dash_form.setVisible(false);
+            staff_form.setVisible(false);
+            bill_form.setVisible(false);
+            medicine_form.setVisible(true);
+            supplier_form.setVisible(false);
+
+        }
+//        showStaff();
+//        add_list_sex();
+        InserSupplierToTable1();
+
     }
+
+    //region nha cung cap
+    public void InserSupplierToTable1()  {
+        SupplierService supplierService = new SupplierService();
+        ObservableList<Supplier> suppliers = FXCollections.observableList(supplierService.getAll());
+
+        ncc_1_tbl_id.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+        ncc_1_tbl_name.setCellValueFactory(new PropertyValueFactory<>("nameSup"));
+        ncc_1_tbl_adress.setCellValueFactory(new PropertyValueFactory<>("addresSup"));
+        ncc_1_tbl_sdt.setCellValueFactory(new PropertyValueFactory<>("sdtSup"));
+        ncc_1_tbl_deletea.setCellFactory(column -> {
+            TableCell<Supplier, Void> cell = new TableCell<>() {
+                FontAwesomeIcon deleIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    deleIcon.getStyleClass().add("delete-icon");
+                    deleIcon.setIconName("TRASH");
+                    deleIcon.setSize("20px");
+                    deleIcon.setCursor(Cursor.HAND);
+                    deleIcon.setFill(Color.RED);
+                    deleIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Xác nhận thông tin");
+                        alert.setHeaderText(null);
+                        alert.setContentText("bạn chắc chắn muốn xóa chứ?");
+                        Optional<ButtonType> op = alert.showAndWait();
+                        if(op.get().equals(ButtonType.OK)){
+                            Supplier supplierState = ncc_1_tbl.getSelectionModel().getSelectedItem();
+                            // Thực hiện hoạt động khi người dùng nhấp vào biểu tượng xóa
+                            String sql = "delete from supplier where idSup ='"+supplierState.getIdSup()+"';";
+                            Data data = new Data();
+                            data.ExcuteQueryUpdateDB(sql);
+                            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                            alert1.setTitle("THông báo");
+                            alert1.setHeaderText(null);
+                            alert1.setContentText("Success");
+                            InserSupplierToTable1();
+                        }
+                    });
+                }
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(deleIcon);
+                    }
+                }
+            };
+            return cell;
+        });
+        ncc_1_tbl_edita.setCellFactory(column -> {
+            TableCell<Supplier, Void> cellup = new TableCell<>() {
+                FontAwesomeIcon upIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    upIcon.getStyleClass().add("up-icon");
+                    upIcon.setIconName("PENCIL");
+                    upIcon.setSize("20px");
+                    upIcon.setCursor(Cursor.HAND);
+                    upIcon.setFill(Color.AQUA);
+                    upIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        Supplier supplierState = ncc_1_tbl.getSelectionModel().getSelectedItem();
+                        getData.supplier = supplierState;
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
+
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+                                InserSupplierToTable1();
+                            });
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(upIcon);
+                    }
+                }
+            };
+            return cellup;
+        });
+        ncc_1_tbl.setItems(suppliers);
+        UUID uuid1 = UUID.randomUUID();
+        ncc_2_id.setText(uuid1+"");
+    }
+
+    public void addNCC(ActionEvent event){
+        String id = ncc_2_id.getText();
+        String name = ncc_2_name.getText();
+        String sdt = ncc_2_numberphone.getText();
+        String address = ncc_2_adress.getText();
+        if(id.isEmpty()||name.isEmpty()||sdt.isEmpty()||address.isEmpty()){
+            erro("Vui lòng nhập đủ thông tin");
+        }
+        else {
+            SupplierService service = new SupplierService();
+            service.add(id,name,sdt,address);
+            noti("Success");
+            InserSupplierToTable1();
+        }
+    }
+    public void resetNCC(ActionEvent event){
+         UUID uuid1 = UUID.randomUUID();
+         ncc_2_id.setText(uuid1+"");
+         ncc_2_name.setText("");
+         ncc_2_numberphone.setText("");
+         ncc_2_adress.setText("");
+    }
+    public void searchSup(ActionEvent event){
+        String keySearch = ncc_2_search.getText();
+        SupplierService services = new SupplierService();
+        List<Supplier> listt = services.getBySearch(keySearch);
+        ObservableList<Supplier> suppliers = FXCollections.observableList(listt);
+        if(listt.size()<1){
+            noti("Không tìm thấy");
+        }
+        ncc_2_tbl_id.setCellValueFactory(new PropertyValueFactory<>("idSup"));
+        ncc_2_tbl_name.setCellValueFactory(new PropertyValueFactory<>("nameSup"));
+        ncc_2_tbl_sdt.setCellValueFactory(new PropertyValueFactory<>("sdtSup"));
+        ncc_2_tbl_adress.setCellValueFactory(new PropertyValueFactory<>("addresSup"));
+        ncc_2_tbl.setItems(suppliers);
+    }
+    //endregion
+
 }
