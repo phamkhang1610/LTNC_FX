@@ -64,12 +64,12 @@ public class GroupMedicineController implements Initializable {
             Stage currentStage = (Stage) close_group_medicine.getScene().getWindow();
             currentStage.close();
             //thông báo đăng nhập thành công và trờ về trang chủ
-            Parent root = FXMLLoader.load(getClass().getResource("Databroad.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.setScene(scene);
-            stage.show();
+//            Parent root = FXMLLoader.load(getClass().getResource("Databroad.fxml"));
+//            Stage stage = new Stage();
+//            Scene scene = new Scene(root);
+//            stage.initStyle(StageStyle.TRANSPARENT);
+//            stage.setScene(scene);
+//            stage.show();
             getData.ma = null;
         } catch (Exception e) {
             e.printStackTrace();
