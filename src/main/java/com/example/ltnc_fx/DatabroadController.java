@@ -2,6 +2,7 @@ package com.example.ltnc_fx;
 
 import Data.Data;
 import Model.*;
+import Services.BillInService;
 import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
+import java.time.ZoneId;
 import java.util.*;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
@@ -300,6 +302,7 @@ public class DatabroadController implements Initializable {
     private Button ncc_2_them;
     // endregion
     //================================== hóa đơn===============
+    //region hoa đơn
     @FXML
     private TableColumn<Bill,Void> col_bill_chitiet;
     @FXML
@@ -344,6 +347,41 @@ public class DatabroadController implements Initializable {
     private Label noti_search_bill;
     @FXML
     private DatePicker search_bill_date;
+    //endregion
+
+    //region hoa don xuat
+    @FXML
+    private DatePicker bill_search_date;
+
+    @FXML
+    private TextField bill_search_mnv;
+
+    @FXML
+    private TextField bill_search_ncc;
+
+    @FXML
+    private TableView<BillIn> bill_tbl;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mabill;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mancc;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_manv;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_ngaytao;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_tongso;
+    @FXML
+    private TableColumn<BillIn,Void> bill_tbl_view;
+
+    @FXML
+    private Button billout_nhap;
+    //endregion
     // bắt đầu điều khiển
     //region phamkhang
     public void erro(String err){
@@ -988,8 +1026,6 @@ public class DatabroadController implements Initializable {
                 delete_type_column.setCellFactory(column -> {
                     TableCell<Type, Void> delete_cell = new TableCell<>() {
                         FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
-    //endregion
-
                         {
                             deleteIcon.getStyleClass().add("delete-icon");
                             deleteIcon.setIconName("TRASH");
@@ -1191,6 +1227,75 @@ public class DatabroadController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+    //endregion
+    //region bill in
+    public void billSearchAction(ActionEvent even){
+        BillInService services = new BillInService();
+            String mnv = bill_search_mnv.getText();
+            String ncc = bill_search_ncc.getText();
+            LocalDate localDate = bill_search_date.getValue();
+            java.util.Date utilDate = new java.util.Date();
+            try {
+                utilDate  = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            }
+            catch (Exception ex){
+                utilDate = null;
+            }
+            List<BillIn> billIns = services.GetByCondition(mnv,utilDate,ncc);
+        ObservableList<BillIn> bills = FXCollections.observableList(billIns);
+        bill_tbl_mabill.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+        bill_tbl_manv.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+        bill_tbl_ngaytao.setCellValueFactory(new PropertyValueFactory<>("date"));
+        bill_tbl_tongso.setCellValueFactory(new PropertyValueFactory<>("total"));
+        bill_tbl_mancc.setCellValueFactory(new PropertyValueFactory<>("ncc"));
+        bill_tbl_view.setCellFactory(column ->{
+            TableCell<BillIn, Void> cellup = new TableCell<>() {
+                FontAwesomeIcon viewIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    viewIcon.getStyleClass().add("delete-icon");
+                    viewIcon.setIconName("EYE");
+                    viewIcon.setSize("20px");
+                    viewIcon.setCursor(Cursor.HAND);
+                    viewIcon.setFill(Color.AQUA);
+                    viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
+
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+
+                            });
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewIcon);
+                    }
+                }
+            };
+            return cellup;
+        });
+        bill_tbl.setItems(bills);
+    }
+    //endregion
     // =======================Bill===============
     public void addBill(){
 
@@ -1588,5 +1693,6 @@ public class DatabroadController implements Initializable {
         ncc_2_tbl.setItems(suppliers);
     }
     //endregion
+
 
 }
