@@ -1591,20 +1591,20 @@ public class DatabroadController implements Initializable {
         loc = dash_date_to.getValue();
         Date toDate = java.sql.Date.valueOf(loc);
         DashService dashService = new DashService();
-        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.getBill(fromDate, toDate));
-
-        if (list_bill.isEmpty()) {
-            // Xử lý khi không có dữ liệu
-            return;
-        }
-
+        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
+        ObservableList<BillIn> list_billIn = FXCollections.observableList(dashService.chartBillin(fromDate,toDate));
         int total_bill = 0;
+        int total_billIn = 0;
+        for(BillIn b: list_billIn){
+            total_billIn += b.getTotal();
+        }
         for(Bill b: list_bill){
             total_bill += b.getTotal();
         }
-        list_bill.clear();
-        list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
-        XYChart.Series series = new XYChart.Series<>();
+        XYChart.Series seriesBill = new XYChart.Series<>();
+        XYChart.Series seriesBillIn = new XYChart.Series<>();
+        seriesBill.setName("Tổng Thu");
+        seriesBillIn.setName("Tổng Chi");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Tạo danh sách các ngày trong khoảng thời gian
@@ -1621,20 +1621,36 @@ public class DatabroadController implements Initializable {
             boolean found = false;
             for (Bill b : list_bill) {
                 if (b.getDate().equals(java.sql.Date.valueOf(date))) {
-                    series.getData().add(new XYChart.Data<>(date.format(dateFormatter), b.getTotal()));
+                    seriesBill.getData().add(new XYChart.Data<>(date.format(dateFormatter), b.getTotal()));
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                series.getData().add(new XYChart.Data<>(date.format(dateFormatter), 0));
+                seriesBill.getData().add(new XYChart.Data<>(date.format(dateFormatter), 0));
             }
+        }
+        for (LocalDate date : dateRange) {
+            boolean found = false;
+            for (BillIn b : list_billIn) {
+                if (b.getDate().equals(java.sql.Date.valueOf(date))) {
+                    seriesBillIn.getData().add(new XYChart.Data<>(date.format(dateFormatter), b.getTotal()));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                seriesBillIn.getData().add(new XYChart.Data<>(date.format(dateFormatter), 0));
+            }
+
         }
 
         // Hiển thị dữ liệu trên biểu đồ
         dash_moneyin.setText(String.valueOf(total_bill));
+        dash_moneyout.setText(String.valueOf(total_billIn));
+        dash_doanhthu.setText(String.valueOf(total_bill-total_billIn));
         dash_chart.getData().clear();
-        dash_chart.getData().add(series);
+        dash_chart.getData().addAll(seriesBill, seriesBillIn);
 
         // Thêm delay trước khi hiển thị biểu đồ lần đầu tiên
         dash_chart.setVisible(false);
