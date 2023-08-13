@@ -135,43 +135,95 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="dash_form" layoutX="39.0" layoutY="87.0" prefHeight="555.0" prefWidth="911.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dash_form" layoutX="39.0" layoutY="87.0" prefHeight="555.0" prefWidth="911.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="334.0" prefWidth="882.0" stylesheets="@databroad.css">
+                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="363.0" prefWidth="882.0" stylesheets="@databroad.css">
                                  <children>
-                                    <AreaChart fx:id="dash_chart" layoutX="-14.0" layoutY="41.0" prefHeight="318.0" prefWidth="886.0">
+                                    <AreaChart fx:id="dash_chart" layoutX="9.0" layoutY="14.0" prefHeight="303.0" prefWidth="886.0">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis fx:id="dash_chart_wight" side="BOTTOM" styleClass="bar" stylesheets="@addmedicine.css" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="dash_chart_height" side="LEFT" />
                                       </yAxis>
                                     </AreaChart>
-                                    <Label layoutX="415.0" layoutY="9.0" prefHeight="34.0" prefWidth="83.0" text="Data chart">
+                                    <Label layoutX="415.0" layoutY="-3.0" prefHeight="34.0" prefWidth="83.0" text="Data chart">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
+                                    <DatePicker fx:id="dash_date_to" layoutX="457.0" layoutY="317.0" prefHeight="35.0" prefWidth="141.0" />
+                                    <DatePicker fx:id="dash_date_from" layoutX="177.0" layoutY="317.0" prefHeight="35.0" prefWidth="141.0" />
+                                    <Label layoutX="123.0" layoutY="322.0" text="Từ ">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="376.0" layoutY="322.0" text="đến">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="dash_btn" layoutX="681.0" layoutY="317.0" mnemonicParsing="false" onAction="#showChart" prefHeight="36.0" prefWidth="99.0" styleClass="nav-btn" stylesheets="@databroad.css" text="Xem biểu đồ" />
                                  </children>
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                               </AnchorPane>
-                              <AnchorPane layoutX="15.0" layoutY="376.0" prefHeight="167.0" prefWidth="882.0" stylesheets="@databroad.css">
+                              <AnchorPane layoutX="14.0" layoutY="383.0" prefHeight="167.0" prefWidth="882.0" stylesheets="@databroad.css">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="135.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css" />
-                                    <AnchorPane layoutX="303.0" layoutY="14.0" prefHeight="135.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css" />
-                                    <AnchorPane layoutX="592.0" layoutY="14.0" prefHeight="135.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css" />
+                                    <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="134.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css">
+                                       <children>
+                                          <FontAwesomeIcon iconName="MONEY" layoutX="27.0" layoutY="109.0" size="6em" wrappingWidth="68.0" AnchorPane.topAnchor="47.28571319580078" />
+                                          <Label layoutX="101.0" layoutY="14.0" text="Tổng chi">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dash_moneyout" alignment="CENTER" contentDisplay="CENTER" layoutX="110.0" layoutY="56.0" prefHeight="54.0" prefWidth="150.0" text="000.000.000" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children></AnchorPane>
+                                    <AnchorPane layoutX="303.0" layoutY="14.0" prefHeight="135.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css">
+                                       <children>
+                                          <FontAwesomeIcon iconName="MONEY" layoutX="26.0" layoutY="110.0" size="6em" wrappingWidth="68.0" />
+                                          <Label layoutX="108.0" layoutY="14.0" text="Tổng thu">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dash_moneyin" alignment="CENTER" contentDisplay="CENTER" layoutX="117.0" layoutY="56.0" prefHeight="54.0" prefWidth="150.0" text="000.000.000" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children></AnchorPane>
+                                    <AnchorPane layoutX="592.0" layoutY="14.0" prefHeight="135.0" prefWidth="276.0" styleClass="nav-form" stylesheets="@databroad.css">
+                                       <children>
+                                          <FontAwesomeIcon iconName="MONEY" layoutX="25.0" layoutY="110.0" size="6em" wrappingWidth="68.0" />
+                                          <Label layoutX="103.0" layoutY="14.0" text="Doanh thu">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dash_doanhthu" alignment="CENTER" contentDisplay="CENTER" layoutX="112.0" layoutY="56.0" prefHeight="54.0" prefWidth="150.0" text="000.000.000" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children></AnchorPane>
                                  </children>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="staff_form" layoutX="-8.0" layoutY="-8.0" prefHeight="555.0" prefWidth="911.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="-8.0">
+                        <AnchorPane fx:id="staff_form" layoutX="-8.0" layoutY="-8.0" prefHeight="555.0" prefWidth="911.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="-8.0">
                            <children>
                               <TabPane layoutX="9.0" layoutY="9.0" prefHeight="554.0" prefWidth="910.0" stylesheets="@databroad.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="9.0">
                                 <tabs>
@@ -565,7 +617,7 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="supplier_form" prefHeight="558.0" prefWidth="912.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="supplier_form" prefHeight="558.0" prefWidth="912.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="1.0" prefHeight="40.0" prefWidth="910.0" style="-fx-background-color: #ccc;" stylesheets="@databroad.css">
                                  <children>
