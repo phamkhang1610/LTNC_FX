@@ -2,6 +2,7 @@ package Services;
 
 import Data.Data;
 import Model.Bill;
+import Model.BillIn;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -34,6 +35,41 @@ public class DashService {
         }
         return list;
     }
+    public List<BillIn> getBillin(Date from, Date to){
+
+        List<BillIn> list= new ArrayList<>();
+        BillIn b;
+    public List<Bill> chartBill(Date from, Date to) {
+
+        Data data = new Data();
+        List<Bill> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fromDate = dateFormat.format(from);
+        String toDate = dateFormat.format(to);
+        String sql = "SELECT * FROM billin WHERE date_create BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+        String sql = "SELECT date_create, SUM(Total) AS total " +
+                "FROM bill " +
+                "WHERE date_create BETWEEN '" + fromDate + "' AND '" + toDate + "' " +
+                "GROUP BY date_create " +
+                "ORDER BY date_create ASC;";
+        ResultSet rs = data.ExcuteQueryGetTable(sql);
+        try{
+            while (rs.next()){
+                b = new BillIn(rs.getString("idBill"), rs.getString("idStaff"), rs.getInt("Total"),
+                        rs.getDate("date_create"), rs.getString("note"), rs.getString("ncc"));
+        try {
+            while (rs.next()) {
+                Date date = rs.getDate("date_create");
+                int total = rs.getInt("Total");
+               // System.out.println("Date: " + date + " total: " + total);
+                Bill b = new Bill(" ", " ", total, date, " ");
+                list.add(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public List<Bill> chartBill(Date from, Date to) {
 
         Data data = new Data();
@@ -51,12 +87,40 @@ public class DashService {
             while (rs.next()) {
                 Date date = rs.getDate("date_create");
                 int total = rs.getInt("Total");
-               // System.out.println("Date: " + date + " total: " + total);
                 Bill b = new Bill(" ", " ", total, date, " ");
                 list.add(b);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            data.Close();
+        }
+
+        return list;
+    }
+    public List<BillIn> chartBillin(Date from, Date to) {
+
+        Data data = new Data();
+        List<BillIn> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fromDate = dateFormat.format(from);
+        String toDate = dateFormat.format(to);
+        String sql = "SELECT date_create, SUM(Total) AS total " +
+                "FROM billin " +
+                "WHERE date_create BETWEEN '" + fromDate + "' AND '" + toDate + "' " +
+                "GROUP BY date_create " +
+                "ORDER BY date_create ASC;";
+        ResultSet rs = data.ExcuteQueryGetTable(sql);
+        try {
+            while (rs.next()) {
+                Date date = rs.getDate("date_create");
+                int total = rs.getInt("Total");
+                BillIn b = new BillIn(" ", " ", total, date, " ", " ");
+                list.add(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         } finally {
             data.Close();
         }

@@ -5,6 +5,8 @@ import Model.*;
 import Services.BillInService;
 import Services.DashService;
 import Services.SupplierService;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,8 +42,10 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
@@ -1315,8 +1319,9 @@ public class DatabroadController implements Initializable {
                     viewIcon.setFill(Color.AQUA);
                     viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
                         BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        getData.idBillIn = billInstate.getIdBill();
                         try {
-                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Parent root = FXMLLoader.load(getClass().getResource("ViewDetailBillIn.fxml"));
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
 
@@ -1324,7 +1329,6 @@ public class DatabroadController implements Initializable {
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setScene(scene);
                             stage.setOnHidden(e -> {
-                                // Thực hiện các hành động sau khi cửa sổ kết thúc
 
                             });
 
@@ -1350,6 +1354,24 @@ public class DatabroadController implements Initializable {
             return cellup;
         });
         bill_tbl.setItems(bills);
+    }
+
+    public void onNhapbillIn(ActionEvent even){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("InputBill.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setOnHidden(e -> {
+
+            });
+
+            stage.show();
+        }
+        catch (Exception ex){ex.printStackTrace();
+        }
     }
     //endregion
     // region=======================Bill===============
@@ -1591,39 +1613,83 @@ public class DatabroadController implements Initializable {
     }
     //endregion
     //region================Dash====================
-    public void showChart(){
+    public void showChart() {
         LocalDate loc = dash_date_from.getValue();
         Date fromDate = java.sql.Date.valueOf(loc);
         loc = dash_date_to.getValue();
         Date toDate = java.sql.Date.valueOf(loc);
-        DashService dashService =new DashService();
-        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.getBill(fromDate,toDate));
-        int total_bill=0;
-        int i = 1;
-        XYChart.Series series = new XYChart.Series();
-
+        DashService dashService = new DashService();
+        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
+        ObservableList<BillIn> list_billIn = FXCollections.observableList(dashService.chartBillin(fromDate,toDate));
+        int total_bill = 0;
+        int total_billIn = 0;
+        for(BillIn b: list_billIn){
+            total_billIn += b.getTotal();
+        }
         for(Bill b: list_bill){
             total_bill += b.getTotal();
-            i++;
+        }
+        XYChart.Series seriesBill = new XYChart.Series<>();
+        XYChart.Series seriesBillIn = new XYChart.Series<>();
+        seriesBill.setName("Tổng Thu");
+        seriesBillIn.setName("Tổng Chi");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Tạo danh sách các ngày trong khoảng thời gian
+        List<LocalDate> dateRange = new ArrayList<>();
+        LocalDate startDate = fromDate.toLocalDate();
+        LocalDate endDate = toDate.toLocalDate();
+        while (!startDate.isAfter(endDate)) {
+            dateRange.add(startDate);
+            startDate = startDate.plusDays(1);
         }
 
-        //dash_chart_wight.setCategoryGap(10);
-        //dash_chart_wight.set
-        list_bill.clear();
-        list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
-        XYChart.Series seriess = new XYChart.Series();
-        for(Bill b: list_bill){
-            series.getData().add(new XYChart.Data(String.valueOf(b.getDate()), b.getTotal()));
+        // Lặp qua danh sách các ngày và thêm vào biểu đồ
+        for (LocalDate date : dateRange) {
+            boolean found = false;
+            for (Bill b : list_bill) {
+                if (b.getDate().equals(java.sql.Date.valueOf(date))) {
+                    seriesBill.getData().add(new XYChart.Data<>(date.format(dateFormatter), b.getTotal()));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                seriesBill.getData().add(new XYChart.Data<>(date.format(dateFormatter), 0));
+            }
         }
+        for (LocalDate date : dateRange) {
+            boolean found = false;
+            for (BillIn b : list_billIn) {
+                if (b.getDate().equals(java.sql.Date.valueOf(date))) {
+                    seriesBillIn.getData().add(new XYChart.Data<>(date.format(dateFormatter), b.getTotal()));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                seriesBillIn.getData().add(new XYChart.Data<>(date.format(dateFormatter), 0));
+            }
+
+        }
+
+        // Hiển thị dữ liệu trên biểu đồ
         dash_moneyin.setText(String.valueOf(total_bill));
-        dash_chart.getData().add(series);
-        //dash_chart = new AreaChart<>(dash_chart_wight, dash_chart_height);
+        dash_moneyout.setText(String.valueOf(total_billIn));
+        dash_doanhthu.setText(String.valueOf(total_bill-total_billIn));
+        dash_chart.getData().clear();
+        dash_chart.getData().addAll(seriesBill, seriesBillIn);
 
-
-
-
-
+        // Thêm delay trước khi hiển thị biểu đồ lần đầu tiên
+        dash_chart.setVisible(false);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+            dash_chart.setVisible(true);
+        }));
+        timeline.play();
     }
+
+
+
     //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
