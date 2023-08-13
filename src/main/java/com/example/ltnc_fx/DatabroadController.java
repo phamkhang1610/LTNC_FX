@@ -477,11 +477,11 @@ public class DatabroadController implements Initializable {
             medicine_form.setVisible(false);
             supplier_form.setVisible(true);
             group_medicine_form.setVisible(false);
-            supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-            dash.setStyle("-fx-background-color: transparent");
-            medicine.setStyle("-fx-background-color: transparent");
-            bill.setStyle("-fx-background-color: transparent");
-            staff.setStyle("-fx-background-color: transparent");
+//            supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
+//            dash.setStyle("-fx-background-color: transparent");
+//            medicine.setStyle("-fx-background-color: transparent");
+//            bill.setStyle("-fx-background-color: transparent");
+//            staff.setStyle("-fx-background-color: transparent");
             InserSupplierToTable1();
         }else if (event.getSource() == groupMedicine) {
             dash_form.setVisible(false);
@@ -1025,9 +1025,14 @@ public class DatabroadController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root);
-            add_group_medicine.getScene().getWindow().hide();
-            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
+            stage.setOnHidden(e -> {
+                // Thực hiện các hành động sau khi cửa sổ kết thúc
+                initalTableValue();
+                System.out.println("Da load");
+            });
+
             stage.show();
         }catch (IOException e){
             throw new RuntimeException(e);
@@ -1109,9 +1114,14 @@ public class DatabroadController implements Initializable {
                                     Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
                                     Stage stage = new Stage();
                                     Scene scene = new Scene(root);
-                                    update_icon.getScene().getWindow().hide();
-                                    stage.initStyle(StageStyle.TRANSPARENT);
+                                    stage.initModality(Modality.APPLICATION_MODAL);
                                     stage.setScene(scene);
+                                    stage.setOnHidden(e -> {
+                                        // Thực hiện các hành động sau khi cửa sổ kết thúc
+                                        initalTableValue();
+                                        System.out.println("Da load");
+                                    });
+
                                     stage.show();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
@@ -1222,9 +1232,15 @@ public class DatabroadController implements Initializable {
                                         Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
                                         Stage stage = new Stage();
                                         Scene scene = new Scene(root);
-                                        update_icon.getScene().getWindow().hide();
-                                        stage.initStyle(StageStyle.TRANSPARENT);
+//                                        update_icon.getScene().getWindow().hide();
+                                        stage.initModality(Modality.APPLICATION_MODAL);
                                         stage.setScene(scene);
+                                        stage.setOnHidden(e -> {
+                                            // Thực hiện các hành động sau khi cửa sổ kết thúc
+                                            initalTableValue();
+                                            System.out.println("Da load");
+                                        });
+
                                         stage.show();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -1245,13 +1261,11 @@ public class DatabroadController implements Initializable {
                         return update_cell;
                     });
                     table_view_type.setItems(listType);
-                    search_type.setText("");
                     table_view_type.setVisible(true);
                     no_result.setVisible(false);
                 }else {
                     table_view_type.setVisible(false);
                     no_result.setVisible(true);
-                    search_type.setText("");
                 }
 
         }catch(Exception e) {
