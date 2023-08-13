@@ -51,7 +51,7 @@ public class DashService {
             while (rs.next()) {
                 Date date = rs.getDate("date_create");
                 int total = rs.getInt("Total");
-                System.out.println("Date: " + date + " total: " + total);
+               // System.out.println("Date: " + date + " total: " + total);
                 Bill b = new Bill(" ", " ", total, date, " ");
                 list.add(b);
             }

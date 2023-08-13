@@ -1,6 +1,7 @@
 package Data;
 
 import Model.Bill;
+import Model.Staff;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -22,6 +23,7 @@ import java.util.List;
 //                    image_Me.setImage(image);
 //                    getData.path = getData.medicine.getImage();
 public class Test {
+    List<Staff> list = new ArrayList<>();
     public static void chartBill(Date from, Date to){
         Data data = new Data();
         List<Bill> list = new ArrayList<>();

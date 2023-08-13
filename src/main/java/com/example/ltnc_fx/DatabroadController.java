@@ -431,6 +431,12 @@ public class DatabroadController implements Initializable {
     }
     public void displayUser(){
         user_label.setText(getData.account.getUsername().toUpperCase());
+        System.out.println(getData.account.getRole());
+        if (getData.account.getRole().equals("staff") ) {
+            dash.setVisible(false);
+            staff.setVisible(false);
+            supplier.setVisible(false);
+        }
     }
     //===========chọn tab
     public void switchForm(ActionEvent event) {
@@ -981,7 +987,7 @@ public class DatabroadController implements Initializable {
                                         Stage stage = new Stage();
                                         Scene scene = new Scene(root);
                                         //ẩn trang cũ
-                                        upIcon_search.getScene().getWindow().hide();
+                                        //upIcon_search.getScene().getWindow().hide();
                                         stage.initStyle(StageStyle.TRANSPARENT);
                                         stage.setScene(scene);
                                         stage.show();
@@ -1346,7 +1352,7 @@ public class DatabroadController implements Initializable {
         bill_tbl.setItems(bills);
     }
     //endregion
-    // =======================Bill===============
+    // region=======================Bill===============
     public void addBill(){
 
         //thông báo đăng nhập thành công và trờ về trang chủ
@@ -1621,7 +1627,7 @@ public class DatabroadController implements Initializable {
     //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //displayUser();
+        displayUser();
         showStaff();
         add_list_sex();
         if(getData.state == "bill"){
