@@ -138,7 +138,7 @@
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="363.0" prefWidth="882.0" stylesheets="@databroad.css">
                                  <children>
-                                    <AreaChart fx:id="dash_chart" layoutX="9.0" layoutY="14.0" prefHeight="303.0" prefWidth="886.0">
+                                    <AreaChart fx:id="dash_chart" layoutX="9.0" layoutY="14.0" prefHeight="303.0" prefWidth="886.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                       <xAxis>
                                         <CategoryAxis fx:id="dash_chart_wight" side="BOTTOM" styleClass="bar" stylesheets="@addmedicine.css" />
                                       </xAxis>
@@ -170,7 +170,7 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                               </AnchorPane>
-                              <AnchorPane layoutX="14.0" layoutY="383.0" prefHeight="167.0" prefWidth="882.0" stylesheets="@databroad.css">
+                              <AnchorPane layoutX="14.0" layoutY="383.0" prefHeight="167.0" prefWidth="882.0" stylesheets="@databroad.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
@@ -376,7 +376,7 @@
                               </TabPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="bill_form" prefHeight="555.0" prefWidth="911.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="bill_form" prefHeight="555.0" prefWidth="911.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TabPane layoutX="2.0" layoutY="3.0" prefHeight="554.0" prefWidth="908.0" tabClosingPolicy="UNAVAILABLE">
                                 <tabs>
@@ -733,7 +733,7 @@
 
                         
                                      
-                        <AnchorPane fx:id="group_medicine_form" layoutX="104.0" layoutY="82.0" prefHeight="558.4" prefWidth="912.0" styleClass="white-bg" stylesheets="@databroad.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="group_medicine_form" layoutX="104.0" layoutY="82.0" prefHeight="558.4" prefWidth="912.0" styleClass="white-bg" stylesheets="@databroad.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="393.0" layoutY="31.0" text="NHÓM THUỐC">
                                  <font>
