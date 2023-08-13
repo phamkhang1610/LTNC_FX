@@ -3,6 +3,7 @@ package com.example.ltnc_fx;
 import Data.Data;
 import Model.*;
 import Services.BillInService;
+import Services.DashService;
 import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +16,9 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -37,6 +41,7 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.time.ZoneId;
 import java.util.*;
+import javafx.stage.Stage;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
@@ -98,12 +103,6 @@ public class DatabroadController implements Initializable {
     private TableColumn<?, ?> col_type_bill;
     @FXML
     private Button colse;
-    @FXML
-    private Button dash;
-    @FXML
-    private AreaChart<?, ?> dash_chart;
-    @FXML
-    private AnchorPane dash_form;
     @FXML
     private DatePicker date_staff;
     @FXML
@@ -188,7 +187,7 @@ public class DatabroadController implements Initializable {
     private Button btn_search_staff;
     @FXML
     private TextField search_staff;
-    //======================fxml medicine=============
+    //region======================fxml medicine=============
     @FXML
     private TextField search_Me;
     @FXML
@@ -301,8 +300,7 @@ public class DatabroadController implements Initializable {
     @FXML
     private Button ncc_2_them;
     // endregion
-    //================================== hóa đơn===============
-    //region hoa đơn
+    //region================================== hóa đơn===============
     @FXML
     private TableColumn<Bill,Void> col_bill_chitiet;
     @FXML
@@ -384,6 +382,37 @@ public class DatabroadController implements Initializable {
     //endregion
     // bắt đầu điều khiển
     //region phamkhang
+    //endregion
+
+    //region=====================Dash===============
+    @FXML
+    private Button dash;
+    @FXML
+    private AnchorPane dash_form;
+    @FXML
+    private Button dash_btn;
+    @FXML
+    private AreaChart<?, ?> dash_chart;
+    @FXML
+    private NumberAxis dash_chart_height;
+    @FXML
+    private CategoryAxis dash_chart_wight;
+    @FXML
+    private DatePicker dash_date_from;
+    @FXML
+    private DatePicker dash_date_to;
+    @FXML
+    private Label dash_doanhthu;
+    @FXML
+    private Label dash_moneyin;
+    @FXML
+    private Label dash_moneyout;
+
+    //endregion
+
+
+
+    //region======== Hom==========
     public void erro(String err){
         Alert alert;
         alert = new Alert(Alert.AlertType.ERROR);
@@ -403,7 +432,7 @@ public class DatabroadController implements Initializable {
 //    public void displayUser(){
 //        user_label.setText(Account.username.toUpperCase());
 //    }
-    //chọn tab
+    //===========chọn tab
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dash) {
             dash_form.setVisible(true);
@@ -487,11 +516,13 @@ public class DatabroadController implements Initializable {
         Stage stage = (Stage)main_form.getScene().getWindow();
         stage.setIconified(true);
     }
+
+    //endregion
     public void close(){
         System.exit(0);
     }
 
-    //=======================================DATA Staff=======================
+    //region=======================================DATA Staff=======================
     //ha lấy ra một list staff trong sql
     private String[] sexlist ={"Nam","Nữ"};
     private Image image;
@@ -763,7 +794,7 @@ public class DatabroadController implements Initializable {
                                     Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
                                     Stage stage = new Stage();
                                     Scene scene = new Scene(root);
-                                    stage.initStyle(StageStyle.TRANSPARENT);
+                                    stage.initModality(Modality.APPLICATION_MODAL);
                                     stage.setScene(scene);
                                     stage.show();
 //                                    Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
@@ -822,8 +853,8 @@ public class DatabroadController implements Initializable {
         image_staff.setImage(null);
     }
 
-    //=============================================
-    // ====================Medicine==================
+    //endregion=============================================
+    //region ====================Medicine==================
 
     public void addMedicine(){
 
@@ -835,7 +866,7 @@ public class DatabroadController implements Initializable {
             Scene scene = new Scene(root);
             //ẩn trang cũ
             add_btl_Me.getScene().getWindow().hide();
-            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -1265,6 +1296,7 @@ public class DatabroadController implements Initializable {
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
 
+    //region =======================Bill===============
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setScene(scene);
                             stage.setOnHidden(e -> {
@@ -1308,7 +1340,11 @@ public class DatabroadController implements Initializable {
             //ẩn trang cũ
             //add_bill.getScene().getWindow().hide();
             stage.initStyle(StageStyle.TRANSPARENT);
+            //stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
+            stage.setOnHidden(e -> {
+                // Thực hiện các hành động sau khi cửa sổ kết thúc
+            });
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -1529,6 +1565,42 @@ public class DatabroadController implements Initializable {
             ex.printStackTrace();
         }
     }
+    //endregion
+    //region================Dash====================
+    public void showChart(){
+        LocalDate loc = dash_date_from.getValue();
+        Date fromDate = java.sql.Date.valueOf(loc);
+        loc = dash_date_to.getValue();
+        Date toDate = java.sql.Date.valueOf(loc);
+        DashService dashService =new DashService();
+        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.getBill(fromDate,toDate));
+        int total_bill=0;
+        int i = 1;
+        XYChart.Series series = new XYChart.Series();
+
+        for(Bill b: list_bill){
+            total_bill += b.getTotal();
+            i++;
+        }
+
+        //dash_chart_wight.setCategoryGap(10);
+        //dash_chart_wight.set
+        list_bill.clear();
+        list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
+        XYChart.Series seriess = new XYChart.Series();
+        for(Bill b: list_bill){
+            series.getData().add(new XYChart.Data(String.valueOf(b.getDate()), b.getTotal()));
+        }
+        dash_moneyin.setText(String.valueOf(total_bill));
+        dash_chart.getData().add(series);
+        //dash_chart = new AreaChart<>(dash_chart_wight, dash_chart_height);
+
+
+
+
+
+    }
+    //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //displayUser();
