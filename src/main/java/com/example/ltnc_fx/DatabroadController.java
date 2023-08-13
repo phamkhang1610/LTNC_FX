@@ -2,6 +2,8 @@ package com.example.ltnc_fx;
 
 import Data.Data;
 import Model.*;
+import Services.BillInService;
+import Services.DashService;
 import Services.SupplierService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,9 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -34,7 +39,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
+import java.time.ZoneId;
 import java.util.*;
+import javafx.stage.Stage;
 
 //import static jdk.jpackage.internal.WixAppImageFragmentBuilder.Id.Icon
 public class DatabroadController implements Initializable {
@@ -96,12 +103,6 @@ public class DatabroadController implements Initializable {
     private TableColumn<?, ?> col_type_bill;
     @FXML
     private Button colse;
-    @FXML
-    private Button dash;
-    @FXML
-    private AreaChart<?, ?> dash_chart;
-    @FXML
-    private AnchorPane dash_form;
     @FXML
     private DatePicker date_staff;
     @FXML
@@ -186,7 +187,7 @@ public class DatabroadController implements Initializable {
     private Button btn_search_staff;
     @FXML
     private TextField search_staff;
-    //======================fxml medicine=============
+    //region======================fxml medicine=============
     @FXML
     private TextField search_Me;
     @FXML
@@ -299,7 +300,7 @@ public class DatabroadController implements Initializable {
     @FXML
     private Button ncc_2_them;
     // endregion
-    //================================== hóa đơn===============
+    //region================================== hóa đơn===============
     @FXML
     private TableColumn<Bill,Void> col_bill_chitiet;
     @FXML
@@ -344,8 +345,74 @@ public class DatabroadController implements Initializable {
     private Label noti_search_bill;
     @FXML
     private DatePicker search_bill_date;
+    //endregion
+
+    //region hoa don xuat
+    @FXML
+    private DatePicker bill_search_date;
+
+    @FXML
+    private TextField bill_search_mnv;
+
+    @FXML
+    private TextField bill_search_ncc;
+
+    @FXML
+    private TableView<BillIn> bill_tbl;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mabill;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mancc;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_manv;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_ngaytao;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_tongso;
+    @FXML
+    private TableColumn<BillIn,Void> bill_tbl_view;
+
+    @FXML
+    private Button billout_nhap;
+    //endregion
     // bắt đầu điều khiển
     //region phamkhang
+    //endregion
+
+    //region=====================Dash===============
+    @FXML
+    private Button dash;
+    @FXML
+    private AnchorPane dash_form;
+    @FXML
+    private Button dash_btn;
+    @FXML
+    private AreaChart<?, ?> dash_chart;
+    @FXML
+    private NumberAxis dash_chart_height;
+    @FXML
+    private CategoryAxis dash_chart_wight;
+    @FXML
+    private DatePicker dash_date_from;
+    @FXML
+    private DatePicker dash_date_to;
+    @FXML
+    private Label dash_doanhthu;
+    @FXML
+    private Label dash_moneyin;
+    @FXML
+    private Label dash_moneyout;
+
+    //endregion
+
+
+
+    //region======== Hom==========
     public void erro(String err){
         Alert alert;
         alert = new Alert(Alert.AlertType.ERROR);
@@ -365,7 +432,7 @@ public class DatabroadController implements Initializable {
 //    public void displayUser(){
 //        user_label.setText(Account.username.toUpperCase());
 //    }
-    //chọn tab
+    //===========chọn tab
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dash) {
             dash_form.setVisible(true);
@@ -449,11 +516,13 @@ public class DatabroadController implements Initializable {
         Stage stage = (Stage)main_form.getScene().getWindow();
         stage.setIconified(true);
     }
+
+    //endregion
     public void close(){
         System.exit(0);
     }
 
-    //=======================================DATA Staff=======================
+    //region=======================================DATA Staff=======================
     //ha lấy ra một list staff trong sql
     private String[] sexlist ={"Nam","Nữ"};
     private Image image;
@@ -725,7 +794,7 @@ public class DatabroadController implements Initializable {
                                     Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
                                     Stage stage = new Stage();
                                     Scene scene = new Scene(root);
-                                    stage.initStyle(StageStyle.TRANSPARENT);
+                                    stage.initModality(Modality.APPLICATION_MODAL);
                                     stage.setScene(scene);
                                     stage.show();
 //                                    Parent root = FXMLLoader.load(getClass().getResource("up_staff.fxml"));
@@ -784,8 +853,8 @@ public class DatabroadController implements Initializable {
         image_staff.setImage(null);
     }
 
-    //=============================================
-    // ====================Medicine==================
+    //endregion=============================================
+    //region ====================Medicine==================
 
     public void addMedicine(){
 
@@ -797,7 +866,7 @@ public class DatabroadController implements Initializable {
             Scene scene = new Scene(root);
             //ẩn trang cũ
             add_btl_Me.getScene().getWindow().hide();
-            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -993,8 +1062,6 @@ public class DatabroadController implements Initializable {
                 delete_type_column.setCellFactory(column -> {
                     TableCell<Type, Void> delete_cell = new TableCell<>() {
                         FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
-    //endregion
-
                         {
                             deleteIcon.getStyleClass().add("delete-icon");
                             deleteIcon.setIconName("TRASH");
@@ -1205,6 +1272,76 @@ public class DatabroadController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+    //endregion
+    //region bill in
+    public void billSearchAction(ActionEvent even){
+        BillInService services = new BillInService();
+            String mnv = bill_search_mnv.getText();
+            String ncc = bill_search_ncc.getText();
+            LocalDate localDate = bill_search_date.getValue();
+            java.util.Date utilDate = new java.util.Date();
+            try {
+                utilDate  = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            }
+            catch (Exception ex){
+                utilDate = null;
+            }
+            List<BillIn> billIns = services.GetByCondition(mnv,utilDate,ncc);
+        ObservableList<BillIn> bills = FXCollections.observableList(billIns);
+        bill_tbl_mabill.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+        bill_tbl_manv.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+        bill_tbl_ngaytao.setCellValueFactory(new PropertyValueFactory<>("date"));
+        bill_tbl_tongso.setCellValueFactory(new PropertyValueFactory<>("total"));
+        bill_tbl_mancc.setCellValueFactory(new PropertyValueFactory<>("ncc"));
+        bill_tbl_view.setCellFactory(column ->{
+            TableCell<BillIn, Void> cellup = new TableCell<>() {
+                FontAwesomeIcon viewIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    viewIcon.getStyleClass().add("delete-icon");
+                    viewIcon.setIconName("EYE");
+                    viewIcon.setSize("20px");
+                    viewIcon.setCursor(Cursor.HAND);
+                    viewIcon.setFill(Color.AQUA);
+                    viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
+
+    //region =======================Bill===============
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+
+                            });
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewIcon);
+                    }
+                }
+            };
+            return cellup;
+        });
+        bill_tbl.setItems(bills);
+    }
+    //endregion
     // =======================Bill===============
     public void addBill(){
 
@@ -1217,7 +1354,11 @@ public class DatabroadController implements Initializable {
             //ẩn trang cũ
             //add_bill.getScene().getWindow().hide();
             stage.initStyle(StageStyle.TRANSPARENT);
+            //stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
+            stage.setOnHidden(e -> {
+                // Thực hiện các hành động sau khi cửa sổ kết thúc
+            });
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -1438,6 +1579,42 @@ public class DatabroadController implements Initializable {
             ex.printStackTrace();
         }
     }
+    //endregion
+    //region================Dash====================
+    public void showChart(){
+        LocalDate loc = dash_date_from.getValue();
+        Date fromDate = java.sql.Date.valueOf(loc);
+        loc = dash_date_to.getValue();
+        Date toDate = java.sql.Date.valueOf(loc);
+        DashService dashService =new DashService();
+        ObservableList<Bill> list_bill = FXCollections.observableList(dashService.getBill(fromDate,toDate));
+        int total_bill=0;
+        int i = 1;
+        XYChart.Series series = new XYChart.Series();
+
+        for(Bill b: list_bill){
+            total_bill += b.getTotal();
+            i++;
+        }
+
+        //dash_chart_wight.setCategoryGap(10);
+        //dash_chart_wight.set
+        list_bill.clear();
+        list_bill = FXCollections.observableList(dashService.chartBill(fromDate,toDate));
+        XYChart.Series seriess = new XYChart.Series();
+        for(Bill b: list_bill){
+            series.getData().add(new XYChart.Data(String.valueOf(b.getDate()), b.getTotal()));
+        }
+        dash_moneyin.setText(String.valueOf(total_bill));
+        dash_chart.getData().add(series);
+        //dash_chart = new AreaChart<>(dash_chart_wight, dash_chart_height);
+
+
+
+
+
+    }
+    //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //displayUser();
@@ -1602,5 +1779,6 @@ public class DatabroadController implements Initializable {
         ncc_2_tbl.setItems(suppliers);
     }
     //endregion
+
 
 }

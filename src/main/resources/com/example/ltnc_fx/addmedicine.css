@@ -13,3 +13,6 @@
 .nav{
     -fx-background-color: linear-gradient(to bottom right, #FFC1C1,  #FF6EB4,#633364);
 }
+.bar {
+    -fx-bar-gap: 10px;
+}
