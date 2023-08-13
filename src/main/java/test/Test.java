@@ -1,8 +1,12 @@
 package test;
 
+import Model.BillIn;
 import Model.Supplier;
+import Services.BillInService;
 import Services.SupplierService;
 
+import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,14 +17,14 @@ public class Test {
             UUID uuid1 = UUID.randomUUID();
             System.out.println("UUID 1: " + uuid1);
 
-            // Tạo một UUID từ một chuỗi
-            String uuidString = "550e8400-e29b-41d4-a716-446655440000";
-            UUID uuid2 = UUID.fromString(uuidString);
-            System.out.println("UUID 2: " + uuid2);
+            Date date = new Date(2023,02,01);
+            BillInService service = new BillInService();
+             List<BillIn> billIns = service.GetByCondition("",date,"");
+            System.out.println(billIns);
 
         }
         catch (Exception ex){
-
+            ex.printStackTrace();
         }
     }
 }
