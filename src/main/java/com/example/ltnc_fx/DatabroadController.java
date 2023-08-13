@@ -2,6 +2,7 @@ package com.example.ltnc_fx;
 
 import Data.Data;
 import Model.*;
+import Services.BillInService;
 import Services.DashService;
 import Services.SupplierService;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.sql.Date;
+import java.time.ZoneId;
 import java.util.*;
 import javafx.stage.Stage;
 
@@ -48,9 +51,15 @@ public class DatabroadController implements Initializable {
     @FXML
     private Button groupMedicine;
     @FXML
+    private AnchorPane group_medicine_form;
+    @FXML
+    private Button add_group_medicine;
+    @FXML
     private Button add_btn_bill;
     @FXML
     private Button add_btn_staff;
+    @FXML
+    private Label no_result;
     @FXML
     private TextField addre_staff;
     @FXML
@@ -121,6 +130,8 @@ public class DatabroadController implements Initializable {
     @FXML
     private TextField sdt_staff;
     @FXML
+    private  TextField search_type;
+    @FXML
     private ComboBox<?> sex_staff;
     @FXML
     private ComboBox<?> size_medicine_bill;
@@ -165,6 +176,8 @@ public class DatabroadController implements Initializable {
     @FXML
     private AnchorPane main_form;
     @FXML
+    private AnchorPane type_table;
+    @FXML
     private AnchorPane medicine_form;
     @FXML
     private AnchorPane supplier_form;
@@ -203,6 +216,20 @@ public class DatabroadController implements Initializable {
     private TableColumn<Medicine, Void> col_upMe;
     @FXML
     private Button reload_me;
+    @FXML
+    private TableView<Type> table_view_type;
+    @FXML
+    private TableColumn<Type, Void> delete_type_column;
+    @FXML
+    private TableColumn<Type, String> describe_type_column;
+    @FXML
+    private TableColumn<Type, Void> edit_type_column;
+    @FXML
+    private TableColumn<Type, String> position_type_column;
+    @FXML
+    private TableColumn<Type, String> name_type_column;
+    @FXML
+    private TableColumn<Type, String> id_type_column;
     @FXML
     private TableColumn<?, ?> col_malo;
     // endregion
@@ -320,6 +347,43 @@ public class DatabroadController implements Initializable {
     private DatePicker search_bill_date;
     //endregion
 
+    //region hoa don xuat
+    @FXML
+    private DatePicker bill_search_date;
+
+    @FXML
+    private TextField bill_search_mnv;
+
+    @FXML
+    private TextField bill_search_ncc;
+
+    @FXML
+    private TableView<BillIn> bill_tbl;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mabill;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_mancc;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_manv;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_ngaytao;
+
+    @FXML
+    private TableColumn<BillIn,String> bill_tbl_tongso;
+    @FXML
+    private TableColumn<BillIn,Void> bill_tbl_view;
+
+    @FXML
+    private Button billout_nhap;
+    //endregion
+    // bắt đầu điều khiển
+    //region phamkhang
+    //endregion
+
     //region=====================Dash===============
     @FXML
     private Button dash;
@@ -376,6 +440,7 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(false);
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
+            group_medicine_form.setVisible(false);
 
         } else if (event.getSource() == staff) {
             dash_form.setVisible(false);
@@ -383,6 +448,7 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(false);
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
+            group_medicine_form.setVisible(false);
             showStaff();
             add_list_sex();
             label_search.setVisible(false);
@@ -393,6 +459,7 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(false);
             medicine_form.setVisible(true);
             supplier_form.setVisible(false);
+            group_medicine_form.setVisible(false);
             tbl_medicine.setVisible(false);
             noty_search.setVisible(false);
         } else if (event.getSource() == bill) {
@@ -401,6 +468,7 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(true);
             medicine_form.setVisible(false);
             supplier_form.setVisible(false);
+            group_medicine_form.setVisible(false);
 
         } else if (event.getSource() == supplier) {
             dash_form.setVisible(false);
@@ -408,12 +476,21 @@ public class DatabroadController implements Initializable {
             bill_form.setVisible(false);
             medicine_form.setVisible(false);
             supplier_form.setVisible(true);
-           // supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
-        //    dash.setStyle("-fx-background-color: transparent");
-         //   medicine.setStyle("-fx-background-color: transparent");
-          //  bill.setStyle("-fx-background-color: transparent");
-          //  staff.setStyle("-fx-background-color: transparent");
+            group_medicine_form.setVisible(false);
+            supplier.setStyle(" -fx-background-color: linear-gradient(to bottom right, #e86de8, #c936c9,#8a1c8a,#970897);");
+            dash.setStyle("-fx-background-color: transparent");
+            medicine.setStyle("-fx-background-color: transparent");
+            bill.setStyle("-fx-background-color: transparent");
+            staff.setStyle("-fx-background-color: transparent");
             InserSupplierToTable1();
+        }else if (event.getSource() == groupMedicine) {
+            dash_form.setVisible(false);
+            staff_form.setVisible(false);
+            bill_form.setVisible(false);
+            medicine_form.setVisible(false);
+            supplier_form.setVisible(false);
+            group_medicine_form.setVisible(true);
+            initalTableValue();           
         }
     }
 
@@ -797,6 +874,7 @@ public class DatabroadController implements Initializable {
         }
 
     }
+
     public void search_nameMe(){
         String id ;
         Data da = new Data();
@@ -940,9 +1018,317 @@ public class DatabroadController implements Initializable {
         }catch (Exception e){e.printStackTrace();}
 
     }
+    //==========================================
+    //===========GROUP MEDICINE=================
+    public void showGrMedicineForm() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            add_group_medicine.getScene().getWindow().hide();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public void initalTableValue(){
+        Data data = new Data();
+        table_view_type.setVisible(true);
+        ObservableList<Type> listType = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM groupmedi";
+        try {
+            ResultSet resultSet = data.ExcuteQueryGetTable(sql);
+            while (resultSet.next()){
+                Type type = new Type();
+                type.setIdType(resultSet.getString("id_group"));
+                type.setNameType(resultSet.getString("name_group"));
+                type.setDescribe(resultSet.getString("describeG"));
+                type.setPosition(resultSet.getString("locationG"));
+                System.out.println(type.getIdType());
+                listType.add(type);
+            }
+            if (!listType.isEmpty()) {
+                id_type_column.setCellValueFactory(new PropertyValueFactory<>("idType"));
+                name_type_column.setCellValueFactory(new PropertyValueFactory<>("nameType"));
+                describe_type_column.setCellValueFactory(new PropertyValueFactory<>("describe"));
+                position_type_column.setCellValueFactory(new PropertyValueFactory<>("position"));
+                delete_type_column.setCellFactory(column -> {
+                    TableCell<Type, Void> delete_cell = new TableCell<>() {
+                        FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
+                        {
+                            deleteIcon.getStyleClass().add("delete-icon");
+                            deleteIcon.setIconName("TRASH");
+                            deleteIcon.setSize("20px");
+                            deleteIcon.setCursor(Cursor.HAND);
+                            deleteIcon.setFill(Color.RED);
+                            deleteIcon.setOnMouseClicked((EventHandler<? super MouseEvent>) event -> {
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Xoá nhóm thuốc");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Bạn chắc chắn muốn xoá nhóm thuốc này không?");
+                                Optional<ButtonType> optional = alert.showAndWait();
+                                if (optional.get().equals(ButtonType.OK)) {
+                                    Type type = table_view_type.getSelectionModel().getSelectedItem();
+                                    String sql = "DELETE from groupmedi WHERE id_group = '" + type.getIdType() + "';";
+                                    Data data = new Data();
+                                    data.ExcuteQueryUpdateDB(sql);
+                                    noti("Xoá nhóm thuốc thành công!");
+                                    initalTableValue();
+                                    no_result.setVisible(false);
+                                }
+                            });
+                        }
+
+                        @Override
+                        protected void updateItem(Void item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                setGraphic(deleteIcon);
+                            }
+                        }
+                    };
+                    return delete_cell;
+                });
+                edit_type_column.setCellFactory(column -> {
+                    TableCell<Type, Void> update_cell = new TableCell<>() {
+                        FontAwesomeIcon update_icon = new FontAwesomeIcon();
+
+                        {
+                            update_icon.getStyleClass().add("up-icon");
+                            update_icon.setIconName("PENCIL");
+                            update_icon.setSize("20px");
+                            update_icon.setCursor(Cursor.HAND);
+                            update_icon.setFill(Color.AQUA);
+                            update_icon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                getData.type = table_view_type.getSelectionModel().getSelectedItem();
+                                try {
+                                    Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
+                                    Stage stage = new Stage();
+                                    Scene scene = new Scene(root);
+                                    update_icon.getScene().getWindow().hide();
+                                    stage.initStyle(StageStyle.TRANSPARENT);
+                                    stage.setScene(scene);
+                                    stage.show();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        }
+
+                        @Override
+                        protected void updateItem(Void item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                setGraphic(update_icon);
+                            }
+                        }
+                    };
+                    return update_cell;
+                });
+                table_view_type.setItems(listType);
+                search_type.setText("");
+                table_view_type.setVisible(true);
+                no_result.setVisible(false);
+            }else {
+                table_view_type.setVisible(false);
+                no_result.setVisible(true);
+                search_type.setText("");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void searchTypeByName() {
+        String idType;
+        Data data = new Data();
+        table_view_type.setVisible(true);
+        ObservableList<Type> listType = FXCollections.observableArrayList();
+        String searchSql = "SELECT * FROM groupmedi WHERE name_group LIKE '%" + search_type.getText() + "%';";
+        try{
+            ResultSet resultSet = data.ExcuteQueryGetTable(searchSql);
+            while(resultSet.next()) {
+                Type type = new Type();
+                type.setIdType(resultSet.getString("id_group"));
+                type.setNameType(resultSet.getString("name_group"));
+                type.setDescribe(resultSet.getString("describeG"));
+                type.setPosition(resultSet.getString("locationG"));
+                System.out.println(type.getIdType());
+                listType.add(type);
+            }
+                if (!listType.isEmpty()) {
+                    id_type_column.setCellValueFactory(new PropertyValueFactory<>("idType"));
+                    name_type_column.setCellValueFactory(new PropertyValueFactory<>("nameType"));
+                    describe_type_column.setCellValueFactory(new PropertyValueFactory<>("describe"));
+                    position_type_column.setCellValueFactory(new PropertyValueFactory<>("position"));
+                    delete_type_column.setCellFactory(column -> {
+                        TableCell<Type, Void> delete_cell = new TableCell<>() {
+                            FontAwesomeIcon deleteIcon = new FontAwesomeIcon();
+
+                            {
+                                deleteIcon.getStyleClass().add("delete-icon");
+                                deleteIcon.setIconName("TRASH");
+                                deleteIcon.setSize("20px");
+                                deleteIcon.setCursor(Cursor.HAND);
+                                deleteIcon.setFill(Color.RED);
+                                deleteIcon.setOnMouseClicked((EventHandler<? super MouseEvent>) event -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Xoá nhóm thuốc");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Bạn chắc chắn muốn xoá nhóm thuốc này không?");
+                                    Optional<ButtonType> optional = alert.showAndWait();
+                                    if (optional.get().equals(ButtonType.OK)) {
+                                        Type type = table_view_type.getSelectionModel().getSelectedItem();
+                                        String sql = "DELETE from groupmedi WHERE id_group = '" + type.getIdType() + "';";
+                                        Data data = new Data();
+                                        data.ExcuteQueryUpdateDB(sql);
+                                        noti("Xoá nhóm thuốc thành công!");
+                                        no_result.setVisible(false);
+                                        table_view_type.setVisible(false);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(deleteIcon);
+                                }
+                            }
+                        };
+                        return delete_cell;
+                    });
+                    edit_type_column.setCellFactory(column -> {
+                        TableCell<Type, Void> update_cell = new TableCell<>() {
+                            FontAwesomeIcon update_icon = new FontAwesomeIcon();
+
+                            {
+                                update_icon.getStyleClass().add("up-icon");
+                                update_icon.setIconName("PENCIL");
+                                update_icon.setSize("20px");
+                                update_icon.setCursor(Cursor.HAND);
+                                update_icon.setFill(Color.AQUA);
+                                update_icon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                                    getData.type = table_view_type.getSelectionModel().getSelectedItem();
+                                    try {
+                                        Parent root = FXMLLoader.load(getClass().getResource("group-medicine.fxml"));
+                                        Stage stage = new Stage();
+                                        Scene scene = new Scene(root);
+                                        update_icon.getScene().getWindow().hide();
+                                        stage.initStyle(StageStyle.TRANSPARENT);
+                                        stage.setScene(scene);
+                                        stage.show();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            protected void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(update_icon);
+                                }
+                            }
+                        };
+                        return update_cell;
+                    });
+                    table_view_type.setItems(listType);
+                    search_type.setText("");
+                    table_view_type.setVisible(true);
+                    no_result.setVisible(false);
+                }else {
+                    table_view_type.setVisible(false);
+                    no_result.setVisible(true);
+                    search_type.setText("");
+                }
+
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
     //endregion
+    //region bill in
+    public void billSearchAction(ActionEvent even){
+        BillInService services = new BillInService();
+            String mnv = bill_search_mnv.getText();
+            String ncc = bill_search_ncc.getText();
+            LocalDate localDate = bill_search_date.getValue();
+            java.util.Date utilDate = new java.util.Date();
+            try {
+                utilDate  = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            }
+            catch (Exception ex){
+                utilDate = null;
+            }
+            List<BillIn> billIns = services.GetByCondition(mnv,utilDate,ncc);
+        ObservableList<BillIn> bills = FXCollections.observableList(billIns);
+        bill_tbl_mabill.setCellValueFactory(new PropertyValueFactory<>("idBill"));
+        bill_tbl_manv.setCellValueFactory(new PropertyValueFactory<>("idStaff"));
+        bill_tbl_ngaytao.setCellValueFactory(new PropertyValueFactory<>("date"));
+        bill_tbl_tongso.setCellValueFactory(new PropertyValueFactory<>("total"));
+        bill_tbl_mancc.setCellValueFactory(new PropertyValueFactory<>("ncc"));
+        bill_tbl_view.setCellFactory(column ->{
+            TableCell<BillIn, Void> cellup = new TableCell<>() {
+                FontAwesomeIcon viewIcon = new FontAwesomeIcon();
+                {
+                    // Styling the icon if needed
+                    viewIcon.getStyleClass().add("delete-icon");
+                    viewIcon.setIconName("EYE");
+                    viewIcon.setSize("20px");
+                    viewIcon.setCursor(Cursor.HAND);
+                    viewIcon.setFill(Color.AQUA);
+                    viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+                        BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(root);
 
     //region =======================Bill===============
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setScene(scene);
+                            stage.setOnHidden(e -> {
+                                // Thực hiện các hành động sau khi cửa sổ kết thúc
+
+                            });
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewIcon);
+                    }
+                }
+            };
+            return cellup;
+        });
+        bill_tbl.setItems(bills);
+    }
+    //endregion
+    // =======================Bill===============
     public void addBill(){
 
         //thông báo đăng nhập thành công và trờ về trang chủ
@@ -1379,5 +1765,6 @@ public class DatabroadController implements Initializable {
         ncc_2_tbl.setItems(suppliers);
     }
     //endregion
+
 
 }

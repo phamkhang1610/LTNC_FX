@@ -6,6 +6,7 @@ public class getData {
     public static String user;
     public static String ma;
     public static String path;
+    public static Type type;
     public static Supplier supplier;
     public static Medicine medicine;
     public static String state;

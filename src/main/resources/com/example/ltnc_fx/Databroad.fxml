@@ -15,7 +15,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -32,7 +31,7 @@
                <top>
                   <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="semi-top-form" stylesheets="@databroad.css" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutY="8.0" prefHeight="45.0" prefWidth="1101.0" styleClass="top_form" stylesheets="@databroad.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="3.0" layoutY="3.0" prefHeight="45.0" prefWidth="1101.0" styleClass="top_form" stylesheets="@databroad.css" AnchorPane.bottomAnchor="3.000000000000007" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
                            <children>
                               <FontAwesomeIcon iconName="USER_MD" layoutX="14.0" layoutY="31.0" size="2em" />
                               <Label layoutX="48.0" layoutY="12.0" text="Phamacy Management System" textFill="#ad3661">
@@ -119,7 +118,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="groupMedicine" layoutX="12.0" layoutY="366.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="165.0" styleClass="nav-btn" stylesheets="@databroad.css" text="Button">
+                              <Button fx:id="groupMedicine" layoutX="12.0" layoutY="366.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="165.0" styleClass="nav-btn" stylesheets="@databroad.css" text="Quản lý  nhóm thuốc">
                                  <graphic>
                                     <FontAwesomeIcon size="1.2em" />
                                  </graphic>
@@ -377,7 +376,7 @@
                               </TabPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="bill_form" prefHeight="555.0" prefWidth="911.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="bill_form" prefHeight="555.0" prefWidth="911.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TabPane layoutX="2.0" layoutY="3.0" prefHeight="554.0" prefWidth="908.0" tabClosingPolicy="UNAVAILABLE">
                                 <tabs>
@@ -490,60 +489,58 @@
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="337.0" prefWidth="387.0">
                                              <children>
-                                                <AnchorPane layoutX="7.0" layoutY="7.0" prefHeight="509.0" prefWidth="585.0" stylesheets="@databroad.css">
+                                                <AnchorPane layoutX="612.0" prefHeight="522.0" prefWidth="315.0" stylesheets="@databroad.css">
+                                                   <children>
+                                                      <Label layoutX="13.0" layoutY="4.0" text="Tìm kiếm hóa đơn theo mã nhân viên">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Button fx:id="bill_button_search" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" onAction="#billSearchAction" prefHeight="33.0" prefWidth="252.0" styleClass="box" stylesheets="@databroad.css" text="Tìm kiếm">
+                                                         <graphic>
+                                                            <FontAwesomeIcon iconName="SEARCH" />
+                                                         </graphic>
+                                                      </Button>
+                                                      <TextField fx:id="bill_search_mnv" layoutX="11.0" layoutY="30.0" prefHeight="33.0" prefWidth="257.0" styleClass="box" stylesheets="@databroad.css" />
+                                                      <DatePicker fx:id="bill_search_date" layoutX="15.0" layoutY="102.0" prefHeight="33.0" prefWidth="249.0" />
+                                                      <Label layoutX="14.0" layoutY="72.0" text="Tìm kiếm theo ngày ">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="bill_search_ncc" layoutX="20.0" layoutY="205.0" prefHeight="33.0" prefWidth="257.0" styleClass="box" stylesheets="@databroad.css" />
+                                                      <Label layoutX="14.0" layoutY="154.0" text="Tìm kiếm hóa đơn theo mã nhà cung cấp">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
                                                    <styleClass>
                                                       <String fx:value="white-bg" />
-                                                      <String fx:value="shadow" />
+                                                      <String fx:value="nav-form" />
                                                    </styleClass>
                                                 </AnchorPane>
-                                                <AnchorPane layoutX="592.0" prefHeight="518.0" prefWidth="313.0" stylesheets="@databroad.css">
+                                                <Button fx:id="billout_nhap" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="83.0" style="-fx-border-color: pink;" stylesheets="@databroad.css" text="Nhập">
+                                                   <graphic>
+                                                      <FontAwesomeIcon iconName="PLUS_CIRCLE" size="1.2em" text="" />
+                                                   </graphic>
                                                    <styleClass>
-                                                      <String fx:value="shadow" />
                                                       <String fx:value="white-bg" />
+                                                      <String fx:value="nav-btn" />
                                                    </styleClass>
+                                                </Button>
+                                                <AnchorPane layoutX="14.0" layoutY="61.0" prefHeight="459.0" prefWidth="595.0">
                                                    <children>
-                                                      <Label layoutX="35.0" layoutY="20.0" text="Medicine ID:">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label layoutX="52.0" layoutY="112.0" text="Quantity:">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="id_medicine_bill" layoutX="113.0" layoutY="16.0" prefHeight="25.0" prefWidth="174.0" />
-                                                      <ComboBox fx:id="size_medicine_bill" layoutX="113.0" layoutY="108.0" prefHeight="25.0" prefWidth="175.0" promptText="choose..." />
-                                                      <Label layoutX="15.0" layoutY="62.0" text="Medicine name:">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="name_medicine_bill" layoutX="113.0" layoutY="58.0" prefHeight="25.0" prefWidth="176.0" />
-                                                      <Button fx:id="add_btn_bill" layoutX="187.0" layoutY="176.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" styleClass="add-btn" stylesheets="@databroad.css" text="Add" />
-                                                      <Button fx:id="pay_btn_bill" layoutX="5.0" layoutY="474.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="305.0" styleClass="reset-btn" stylesheets="@databroad.css" text="Pay">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Button>
-                                                      <Label layoutX="79.0" layoutY="421.0" text="Total:">
-                                                         <font>
-                                                            <Font name="System Bold" size="13.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label fx:id="total_bill" layoutX="133.0" layoutY="419.0" prefHeight="23.0" prefWidth="154.0" text="\$ 0.0">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Line endX="207.0" layoutX="106.0" layoutY="228.0" startX="-100.0" />
-                                                      <TextField fx:id="id_staff_bill" layoutX="113.0" layoutY="247.0" prefHeight="25.0" prefWidth="175.0" />
-                                                      <TextArea fx:id="ghi_bill" layoutX="115.0" layoutY="297.0" prefHeight="106.0" prefWidth="172.0" />
-                                                      <Label layoutX="56.0" layoutY="297.0" text="Ghi chú:">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
+                                                      <TableView fx:id="bill_tbl" layoutX="98.0" layoutY="-6.0" prefHeight="429.6" prefWidth="595.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="bill_tbl_mabill" prefWidth="83.20000839233398" text="Mã bill" />
+                                                          <TableColumn fx:id="bill_tbl_manv" prefWidth="102.39999389648438" text="Mã nhân viên" />
+                                                            <TableColumn fx:id="bill_tbl_ngaytao" prefWidth="106.40003967285156" text="Ngày tạo" />
+                                                            <TableColumn fx:id="bill_tbl_mancc" prefWidth="129.60003662109375" text="Mã nhà cung cấp" />
+                                                            <TableColumn fx:id="bill_tbl_tongso" prefWidth="100.0" text="Tổng Số" />
+                                                            <TableColumn fx:id="bill_tbl_view" prefWidth="76.79998779296875" text="View" />
+                                                        </columns>
+                                                      </TableView>
                                                    </children>
                                                 </AnchorPane>
                                              </children>
@@ -592,7 +589,7 @@
                                           <String fx:value="table-view" />
                                        </styleClass>
                                     </TableView>
-                                    <Label fx:id="noty_search" layoutX="367.0" layoutY="146.0" text="Có thể bạn nhập sai tên thuốc hoặc tên thuốc đó không tồn tại" visible="false">
+                                    <Label fx:id="noty_search" layoutX="367.0" layoutY="146.0" text="Không có kết quả nào phù hợp với từ khoá tìm kiếm!" visible="false">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -728,6 +725,69 @@
                                         </Tab>
                                       </tabs>
                                     </TabPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>     
+
+
+                        
+                                     
+                        <AnchorPane fx:id="group_medicine_form" layoutX="104.0" layoutY="82.0" prefHeight="558.4" prefWidth="912.0" styleClass="white-bg" stylesheets="@databroad.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="393.0" layoutY="31.0" text="NHÓM THUỐC">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="add_group_medicine" layoutX="22.0" layoutY="50.0" mnemonicParsing="false" onAction="#showGrMedicineForm" prefHeight="33.0" prefWidth="83.0" stylesheets="@databroad.css" text="Thêm">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="PLUS_CIRCLE" />
+                                 </graphic>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="nav-btn" />
+                                 </styleClass>
+                              </Button>
+                              <Line endX="284.10003662109375" endY="-7.62939453125E-6" layoutX="101.0" layoutY="41.0" startX="-100.0" />
+                              <Line endX="100.0" layoutX="811.0" layoutY="41.0" startX="-308.29998779296875" startY="-7.62939453125E-6" />
+                              <Button fx:id="group_medicine_reload" layoutX="109.0" layoutY="50.0" mnemonicParsing="false" onAction="#initalTableValue" prefHeight="33.0" prefWidth="83.0" stylesheets="@databroad.css" text="Reload">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="REPEAT" />
+                                 </graphic>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="nav-btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label layoutX="33.0" layoutY="102.0" text="Tìm kiếm theo tên: ">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="search_type" layoutX="174.0" layoutY="95.0" prefHeight="34.0" prefWidth="196.0" promptText="Search..." styleClass="box" stylesheets="@databroad.css" />
+                              <Button layoutX="324.0" layoutY="95.0" mnemonicParsing="false" onAction="#searchTypeByName" prefHeight="34.0" prefWidth="45.0" styleClass="box" stylesheets="@databroad.css">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="SEARCH" />
+                                 </graphic>
+                              </Button>
+                              <AnchorPane fx:id="type_table" layoutX="2.0" layoutY="211.0" prefHeight="200.0" prefWidth="916.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+                                 <children>
+                                    <Label fx:id="no_result" layoutX="299.0" layoutY="90.0" text="Không có kết quả nào phù hợp với từ khoá từ kiếm!">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView fx:id="table_view_type" layoutY="10.0" prefHeight="327.0" prefWidth="921.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                        <TableColumn fx:id="id_type_column" prefWidth="85.59997248649597" text="ID" />
+                                        <TableColumn fx:id="name_type_column" minWidth="0.0" prefWidth="196.00001525878906" text="Tên nhóm thuốc" />
+                                          <TableColumn fx:id="describe_type_column" prefWidth="287.20001220703125" text="Mô tả" />
+                                          <TableColumn fx:id="position_type_column" minWidth="0.0" prefWidth="212.0" text="Vị trí" />
+                                          <TableColumn fx:id="edit_type_column" minWidth="0.0" prefWidth="64.800048828125" text="Sửa" />
+                                          <TableColumn fx:id="delete_type_column" prefWidth="75.0" text="Xoá" />
+                                      </columns>
+                                    </TableView>
                                  </children>
                               </AnchorPane>
                            </children>

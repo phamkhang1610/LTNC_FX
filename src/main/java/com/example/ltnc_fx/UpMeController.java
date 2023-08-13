@@ -82,7 +82,7 @@ public class UpMeController implements Initializable {
     public void noti(String not){
         Alert alert;
         alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo lỗi");
+        alert.setTitle("Thông báo");
         alert.setHeaderText(null);
         alert.setContentText(not);
         alert.showAndWait();
@@ -165,7 +165,7 @@ public class UpMeController implements Initializable {
 
             try{
                 String checkData = "select nameMedi from medicine where nameMedi = '"
-                        +nameMe.getText()+"' or idMe='"+idMe.getText()+"'";
+                        +nameMe.getText()+"' or idMe = '" + idMe.getText() + "'";
                 ResultSet rs = data.ExcuteQueryGetTable(checkData);
                 if(rs.next()){
                     erro("Thuốc "+ nameMe.getText()+" đã tồn tại");
@@ -257,7 +257,6 @@ public class UpMeController implements Initializable {
                         +me.getIdSup()+"', expiry = '"+me.getExpiry()+"' where idMe = '"+me.getIdMe()
                         +"' and id_lo = '"+me.getMalo()+"';";
                 data.ExcuteQueryUpdateDB(sql2);
-
                 noti("Sửa thành công");
                 reset();
                 close();
