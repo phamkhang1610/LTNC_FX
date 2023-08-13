@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="320.0" prefWidth="390.0" styleClass="nav-form" stylesheets="@databroad.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.GroupMedicineController">
+   <children>
+      <Label layoutX="35.0" layoutY="44.0" text="ID nhóm thuốc:" AnchorPane.leftAnchor="35.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="31.0" layoutY="90.0" text="Tên nhóm thuốc:" AnchorPane.leftAnchor="35.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="135.0" text="Vị trí: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="180.0" text="Ghi chú: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="id_type" layoutX="162.0" layoutY="42.0" prefHeight="25.0" prefWidth="180.0" styleClass="box" stylesheets="@addmedicine.css" AnchorPane.topAnchor="40.0" />
+      <TextField fx:id="name_type" layoutX="163.0" layoutY="97.0" prefHeight="25.0" prefWidth="180.0" styleClass="box" stylesheets="@addmedicine.css" AnchorPane.topAnchor="85.0" />
+      <TextField fx:id="position_type" layoutX="163.0" layoutY="151.0" prefHeight="25.0" prefWidth="180.0" styleClass="box" stylesheets="@addmedicine.css" AnchorPane.topAnchor="130.0" />
+      <TextField fx:id="description_type" layoutX="163.0" layoutY="196.0" prefHeight="25.0" prefWidth="180.0" styleClass="box" stylesheets="@addmedicine.css" AnchorPane.topAnchor="175.0" />
+      <Button fx:id="add_type_btn" layoutX="145.0" layoutY="240.0" mnemonicParsing="false" onAction="#addType" prefHeight="36.0" prefWidth="100.0" styleClass="add-btn" stylesheets="@databroad.css" text="Thêm" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="240.0">
+         <graphic>
+            <FontAwesomeIcon iconName="PLUS_CIRCLE" />
+         </graphic>
+      </Button>
+      <Button fx:id="update_type_btn" layoutX="145.0" layoutY="240.0" mnemonicParsing="false" onAction="#updateType" prefHeight="36.0" prefWidth="100.0" stylesheets="@databroad.css" text="Cập nhật" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="240.0">
+         <graphic>
+            <FontAwesomeIcon iconName="REPEAT" />
+         </graphic>
+         <styleClass>
+            <String fx:value="add-btn" />
+            <String fx:value="reset-btn" />
+         </styleClass>
+      </Button>
+      <Button fx:id="close_group_medicine" layoutX="363.0" layoutY="2.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@databroad.css">
+         <graphic>
+            <FontAwesomeIcon iconName="CLOSE" text="" />
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
