@@ -1309,8 +1309,9 @@ public class DatabroadController implements Initializable {
                     viewIcon.setFill(Color.AQUA);
                     viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
                         BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        getData.idBillIn = billInstate.getIdBill();
                         try {
-                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Parent root = FXMLLoader.load(getClass().getResource("ViewDetailBillIn.fxml"));
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
 
@@ -1318,7 +1319,6 @@ public class DatabroadController implements Initializable {
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setScene(scene);
                             stage.setOnHidden(e -> {
-                                // Thực hiện các hành động sau khi cửa sổ kết thúc
 
                             });
 
@@ -1344,6 +1344,24 @@ public class DatabroadController implements Initializable {
             return cellup;
         });
         bill_tbl.setItems(bills);
+    }
+
+    public void onNhapbillIn(ActionEvent even){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("InputBill.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setOnHidden(e -> {
+
+            });
+
+            stage.show();
+        }
+        catch (Exception ex){ex.printStackTrace();
+        }
     }
     //endregion
     // =======================Bill===============

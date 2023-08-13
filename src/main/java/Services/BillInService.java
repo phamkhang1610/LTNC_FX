@@ -2,6 +2,7 @@ package Services;
 
 import Data.Data;
 import Model.BillIn;
+import Model.BillInDetail;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -90,5 +91,28 @@ public class BillInService {
             _db.Close();
         }
         return bills;
+    }
+
+    public List<BillInDetail> GetBillDetailsById(String id) {
+        String sql = "SELECT * FROM detailbillin where ID_bill = '"+id+"' ";
+        List<BillInDetail> billInDetails = new ArrayList<>();
+        try {
+            ResultSet rs = _db.ExcuteQueryGetTable(sql);
+            while (rs.next()){
+                BillInDetail billInDetail = new BillInDetail(rs.getString("ID_bill"),
+                        rs.getString("idMe"),
+                        rs.getInt("quantity"),
+                        rs.getString("money"),
+                        rs.getString("nameMedi"));
+                billInDetails.add(billInDetail);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        finally {
+            _db.Close();
+        }
+        return billInDetails;
     }
 }

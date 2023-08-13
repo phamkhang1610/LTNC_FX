@@ -520,7 +520,7 @@
                                                       <String fx:value="nav-form" />
                                                    </styleClass>
                                                 </AnchorPane>
-                                                <Button fx:id="billout_nhap" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="83.0" style="-fx-border-color: pink;" stylesheets="@databroad.css" text="Nhập">
+                                                <Button fx:id="billout_nhap" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#onNhapbillIn" prefHeight="33.0" prefWidth="83.0" style="-fx-border-color: pink;" stylesheets="@databroad.css" text="Nhập">
                                                    <graphic>
                                                       <FontAwesomeIcon iconName="PLUS_CIRCLE" size="1.2em" text="" />
                                                    </graphic>
@@ -733,7 +733,7 @@
 
                         
                                      
-                        <AnchorPane fx:id="group_medicine_form" layoutX="104.0" layoutY="82.0" prefHeight="558.4" prefWidth="912.0" styleClass="white-bg" stylesheets="@databroad.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="group_medicine_form" layoutX="104.0" layoutY="82.0" prefHeight="558.4" prefWidth="912.0" styleClass="white-bg" stylesheets="@databroad.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="393.0" layoutY="31.0" text="NHÓM THUỐC">
                                  <font>
