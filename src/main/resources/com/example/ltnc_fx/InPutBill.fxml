@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="516.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.InPutBillController">
+   <children>
+      <AnchorPane layoutX="-2.0" layoutY="4.0" prefHeight="512.0" prefWidth="534.0" style="-fx-background-color: #ccc;">
+         <children>
+            <TableView fx:id="bill_in_tbl" layoutX="110.0" layoutY="64.0" prefHeight="316.0" prefWidth="534.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="bill_in_tbl_mathuoc" prefWidth="108.80001986026764" text="Tên thuốc" />
+                <TableColumn fx:id="bill_in_tbl_tenthuoc" prefWidth="72.79998016357422" text="Mã thuốc" />
+                  <TableColumn fx:id="bill_in_tbl_solo" prefWidth="99.20001220703125" text="Hạn sử dụng" />
+                  <TableColumn fx:id="bill_in_tbl_soluong" prefWidth="88.800048828125" text="Số lượng" />
+                  <TableColumn fx:id="bill_in_tbl_tinhtien" prefWidth="86.39996337890625" text="Tính tiền" />
+                  <TableColumn fx:id="bill_in_tbl_xoa" prefWidth="75.0" text="Xóa" />
+              </columns>
+            </TableView>
+            <Button layoutX="246.0" layoutY="329.0" mnemonicParsing="false" onAction="#OnTinhTien" style="-fx-background-color: blue;" text="Tính tiền" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="246.0" layoutY="375.0" mnemonicParsing="false" onAction="#OnXacnhan" style="-fx-background-color: red;" text="Xác nhận" textFill="WHITE" fx:id="xacnhan_save">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Label fx:id="l" layoutX="340.0" layoutY="333.0" prefHeight="19.0" prefWidth="70.0" text="Tổng tiền: ">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="tongtien_bill" layoutX="422.0" layoutY="333.0" prefHeight="18.0" prefWidth="78.0" text="000.00">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="537.0" prefHeight="519.0" prefWidth="276.0" style="-fx-background-color: #ccc;">
+         <children>
+            <TextField fx:id="bill_nhap_tenthuoc" layoutX="89.0" layoutY="50.0" />
+            <TextField fx:id="bill_nhap_sl" layoutX="89.0" layoutY="105.0" />
+            <TextField fx:id="bill_nhap_mancc" layoutX="90.0" layoutY="165.0" />
+            <Text layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên thuốc:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="14.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="14.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã ncc">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Button layoutX="151.0" layoutY="352.0" mnemonicParsing="false" onAction="#OnAdd" prefHeight="38.0" prefWidth="69.0" style="-fx-background-color: #000;" text="Add" textFill="WHITE" />
+            <DatePicker fx:id="hansudung" layoutX="88.0" layoutY="227.0" prefHeight="26.0" prefWidth="150.0" />
+            <Text layoutX="14.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày" wrappingWidth="40.03125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <TextField fx:id="bill_nhap_dongia" layoutX="88.0" layoutY="277.0" />
+            <Text layoutX="14.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn giá" wrappingWidth="59.595703125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

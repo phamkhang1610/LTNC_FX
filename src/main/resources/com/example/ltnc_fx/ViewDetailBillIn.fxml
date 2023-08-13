@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ltnc_fx.ViewDetailBillController">
+   <children>
+      <TableView fx:id="bii_tbl_detail" layoutX="234.0" layoutY="45.0" prefHeight="400.0" prefWidth="635.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="bii_tbl_detail_mabill" prefWidth="99.20001065731049" text="Mã bill" />
+          <TableColumn fx:id="bii_tbl_detail_mathuoc" prefWidth="99.19995880126953" text="Mã thuốc" />
+            <TableColumn fx:id="bii_tbl_detail_soluong" prefWidth="132.0" text="Số lượng" />
+            <TableColumn fx:id="bii_tbl_detail_tongtien" prefWidth="150.4000244140625" text="Tổng tiền" />
+            <TableColumn fx:id="bii_tbl_detail_tenthuoc" prefWidth="147.19992065429688" text="Tên thuốc" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
