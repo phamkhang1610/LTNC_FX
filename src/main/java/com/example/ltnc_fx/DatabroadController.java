@@ -429,9 +429,9 @@ public class DatabroadController implements Initializable {
         alert.setContentText(not);
         alert.showAndWait();
     }
-//    public void displayUser(){
-//        user_label.setText(Account.username.toUpperCase());
-//    }
+    public void displayUser(){
+        user_label.setText(getData.account.getUsername().toUpperCase());
+    }
     //===========chọn tab
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dash) {
@@ -547,7 +547,8 @@ public class DatabroadController implements Initializable {
                        rs.getString("idStaff"), rs.getString("nameStaff"),
                        rs.getString("cmnd"), rs.getString("sexStaff"),
                        rs.getString("addresStaff"), rs.getDate("date"),
-                       rs.getString("phoneStaff"),rs.getString("image")
+                       rs.getString("phoneStaff"),rs.getString("image"),
+                       rs.getString("user"),rs.getString("pass"),rs.getString("role_id")
                );
                list.add(staff);
             }
@@ -685,10 +686,12 @@ public class DatabroadController implements Initializable {
                     String uri = getData.path;
                     uri = uri.replace("\\","\\\\");
                     a.setImage(uri);
-                    String sql ="insert into staff values('"+ a.getIdStaff()+"','"+a.getNameStaff()+"','"+
-                            a.getSexStaff()+"','"+a.getCmnd()+"','"+a.getNgaysinh()+"','"
-                            +a.getAddresStaff()+"','"+a.getPhoneStaff()+"','"+a.getImage()+"');";
-                    data.ExcuteQueryUpdateDB(sql);
+                    String c = "INSERT INTO `nhathuocdb`.`staff` (`idStaff`, `nameStaff`, `sexStaff`, `cmnd`, `date`, `addresStaff`, `phoneStaff`, `image`, `user`, `pass`, `role_id`) " +
+                            "VALUES ('"+ a.getIdStaff()+"','"+a.getNameStaff()+"','"+ a.getSexStaff()+"','"+a.getCmnd()+"','"+a.getNgaysinh()+"','"
+                            +a.getAddresStaff()+"','"+a.getPhoneStaff()+"','"+a.getImage()+
+                            "', 'user"+a.getIdStaff()+"', '1', '"+a.getIdStaff()+"');";
+                    String sql ="INSERT INTO role (`ID`, `RoleName`) VALUES ('"+a.getIdStaff()+"', 'staff');;";
+                    data.ExcuteQueryUpdateDB(c);
                     showStaff();
                     noti("Thêm thành công");
                     id_staff.setText("");name_staff.setText("");date_staff.setValue(null);
@@ -716,7 +719,8 @@ public class DatabroadController implements Initializable {
                         rs.getString("idStaff"), rs.getString("nameStaff"),
                         rs.getString("cmnd"), rs.getString("sexStaff"),
                         rs.getString("addresStaff"), rs.getDate("date"),
-                        rs.getString("phoneStaff"),rs.getString("image")
+                        rs.getString("phoneStaff"),rs.getString("image"),
+                        rs.getString("user"),rs.getString("pass"),rs.getString("role_id")
                 );
                 list.add(a);
             }

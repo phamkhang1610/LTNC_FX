@@ -1,6 +1,12 @@
 package Data;
 
+import Model.Bill;
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 //            up_select.setVisible(true);
@@ -16,52 +22,38 @@ import java.util.ArrayList;
 //                    image_Me.setImage(image);
 //                    getData.path = getData.medicine.getImage();
 public class Test {
-    public static void main(String[] args){
-        ArrayList<A> list = new ArrayList<>();
-        for(int i=0;i<4;i++){
-            list.add(new A());
-        }
-        for (A b: list){
-            System.out.println(b.toString());
-        }
-        int c =20;
-        for(A b: list){
-            if(b.getA()<=c){
-
-                c=c-b.getA();
-                b.setA(0);
-                System.out.println("C:"+c);
-            }else{
-                b.setA(b.setAA(c));
-                break;
+    public static void chartBill(Date from, Date to){
+        Data data = new Data();
+        List<Bill> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fromDate = dateFormat.format(from);
+        String toDate = dateFormat.format(to);
+        String sql = "SELECT date_create, SUM(Total) AS total " +
+                "FROM bill " +
+                "WHERE date_create BETWEEN '" + fromDate + "' AND '" + toDate + "' " +
+                "GROUP BY date_create " +
+                "ORDER BY date_create ASC;";
+        ResultSet rs = data.ExcuteQueryGetTable(sql);
+        try {
+            while (rs.next()) {
+                Date date = rs.getDate("date_create");
+                int total = rs.getInt("Total");
+                System.out.println("Date: " + date + " total: " + total);
+                Bill b = new Bill(" ", " ", total, date, " ");
+                list.add(b);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            data.Close();
         }
-        for (A b: list){
-            System.out.println(b.toString());
-        }
+
+        // return list;
     }
+    public static void main(String[] args) {
+        Date from = Date.valueOf("2023-08-03");
+        Date to = Date.valueOf("2023-08-10");
+        chartBill(from,to);
+    }
+
 }
- class A {
-    int a =10;
-    A(){
-
-    }
-
-     public void setA(int c) {
-         this.a = c;
-     }
-     public int setAA(int c) {
-         this.a = this.a -c;
-         return a;
-     }
-
-     public int getA() {
-         return a;
-     }
-
-     @Override
-     public String toString() {
-         System.out.println(this.a);
-         return null;
-     }
- }

@@ -12,4 +12,5 @@ public class getData {
     public static String state;
     public static Scene current;
     public static Bill bill;
+    public static Account account;
 }
