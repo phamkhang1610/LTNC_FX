@@ -17,4 +17,5 @@ public class getData {
     public static Bill bill;
     public static String idBillIn;
     public static List<MechidenAdd> mechidenAddList = new ArrayList<>();
+    public static Account account;
 }

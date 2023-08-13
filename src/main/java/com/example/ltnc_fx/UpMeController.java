@@ -198,7 +198,10 @@ public class UpMeController implements Initializable {
     public void showData() {
         if (getData.ma == null) {
             ///
+            add_btn_me.setVisible(true);
         } else {
+            add_btn_me.setVisible(false);
+            up_select.setVisible(true);
             String[] mang = getData.ma.split(" ");
             up_select.setVisible(true);
             add_btn_me.setVisible(false);

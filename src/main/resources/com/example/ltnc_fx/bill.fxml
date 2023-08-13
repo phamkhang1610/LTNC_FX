@@ -35,7 +35,7 @@
                </font>
             </Label>
             <TextField fx:id="idStaff" layoutX="107.0" layoutY="286.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@addmedicine.css" />
-            <Label layoutX="11.0" layoutY="290.0" prefHeight="19.0" prefWidth="95.0" text="Tên nhân viên">
+            <Label layoutX="11.0" layoutY="290.0" prefHeight="19.0" prefWidth="95.0" text="Mã nhân viên">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
