@@ -16,11 +16,14 @@ public class Staff implements Serializable{
     private Date ngaysinh;
     private String phoneStaff;
     private String image;
+    private String user;
+    private String pass;
+    private String role_id;
 
     public Staff() {
     }
 
-    public Staff(String idStaff, String nameStaff, String cmnd, String sexStaff, String addresStaff, Date ngaysinh, String phoneStaff,String image) {
+    public Staff(String idStaff, String nameStaff, String cmnd, String sexStaff, String addresStaff, Date ngaysinh, String phoneStaff,String image,String user,String pass, String role_id) {
         this.idStaff = idStaff;
         this.nameStaff = nameStaff;
         this.cmnd = cmnd;
@@ -29,6 +32,9 @@ public class Staff implements Serializable{
         this.ngaysinh = ngaysinh;
         this.phoneStaff = phoneStaff;
         this.image = image;
+        this.user = user;
+        this.pass = pass;
+        this.role_id = role_id;
     }
 
     public String getCmnd() {

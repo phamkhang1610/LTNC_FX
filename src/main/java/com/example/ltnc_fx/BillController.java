@@ -341,6 +341,6 @@ public void erro(String err){
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        idStaff.setText(getData.account.getIdStaff());
     }
 }

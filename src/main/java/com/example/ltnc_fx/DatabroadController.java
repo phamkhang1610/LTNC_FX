@@ -433,9 +433,15 @@ public class DatabroadController implements Initializable {
         alert.setContentText(not);
         alert.showAndWait();
     }
-//    public void displayUser(){
-//        user_label.setText(Account.username.toUpperCase());
-//    }
+    public void displayUser(){
+        user_label.setText(getData.account.getUsername().toUpperCase());
+        System.out.println(getData.account.getRole());
+        if (getData.account.getRole().equals("staff") ) {
+            dash.setVisible(false);
+            staff.setVisible(false);
+            supplier.setVisible(false);
+        }
+    }
     //===========chọn tab
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dash) {
@@ -551,7 +557,8 @@ public class DatabroadController implements Initializable {
                        rs.getString("idStaff"), rs.getString("nameStaff"),
                        rs.getString("cmnd"), rs.getString("sexStaff"),
                        rs.getString("addresStaff"), rs.getDate("date"),
-                       rs.getString("phoneStaff"),rs.getString("image")
+                       rs.getString("phoneStaff"),rs.getString("image"),
+                       rs.getString("user"),rs.getString("pass"),rs.getString("role_id")
                );
                list.add(staff);
             }
@@ -689,10 +696,12 @@ public class DatabroadController implements Initializable {
                     String uri = getData.path;
                     uri = uri.replace("\\","\\\\");
                     a.setImage(uri);
-                    String sql ="insert into staff values('"+ a.getIdStaff()+"','"+a.getNameStaff()+"','"+
-                            a.getSexStaff()+"','"+a.getCmnd()+"','"+a.getNgaysinh()+"','"
-                            +a.getAddresStaff()+"','"+a.getPhoneStaff()+"','"+a.getImage()+"');";
-                    data.ExcuteQueryUpdateDB(sql);
+                    String c = "INSERT INTO `nhathuocdb`.`staff` (`idStaff`, `nameStaff`, `sexStaff`, `cmnd`, `date`, `addresStaff`, `phoneStaff`, `image`, `user`, `pass`, `role_id`) " +
+                            "VALUES ('"+ a.getIdStaff()+"','"+a.getNameStaff()+"','"+ a.getSexStaff()+"','"+a.getCmnd()+"','"+a.getNgaysinh()+"','"
+                            +a.getAddresStaff()+"','"+a.getPhoneStaff()+"','"+a.getImage()+
+                            "', 'user"+a.getIdStaff()+"', '1', '"+a.getIdStaff()+"');";
+                    String sql ="INSERT INTO role (`ID`, `RoleName`) VALUES ('"+a.getIdStaff()+"', 'staff');;";
+                    data.ExcuteQueryUpdateDB(c);
                     showStaff();
                     noti("Thêm thành công");
                     id_staff.setText("");name_staff.setText("");date_staff.setValue(null);
@@ -720,7 +729,8 @@ public class DatabroadController implements Initializable {
                         rs.getString("idStaff"), rs.getString("nameStaff"),
                         rs.getString("cmnd"), rs.getString("sexStaff"),
                         rs.getString("addresStaff"), rs.getDate("date"),
-                        rs.getString("phoneStaff"),rs.getString("image")
+                        rs.getString("phoneStaff"),rs.getString("image"),
+                        rs.getString("user"),rs.getString("pass"),rs.getString("role_id")
                 );
                 list.add(a);
             }
@@ -981,7 +991,7 @@ public class DatabroadController implements Initializable {
                                         Stage stage = new Stage();
                                         Scene scene = new Scene(root);
                                         //ẩn trang cũ
-                                        upIcon_search.getScene().getWindow().hide();
+                                        //upIcon_search.getScene().getWindow().hide();
                                         stage.initStyle(StageStyle.TRANSPARENT);
                                         stage.setScene(scene);
                                         stage.show();
@@ -1309,8 +1319,9 @@ public class DatabroadController implements Initializable {
                     viewIcon.setFill(Color.AQUA);
                     viewIcon.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
                         BillIn billInstate = bill_tbl.getSelectionModel().getSelectedItem();
+                        getData.idBillIn = billInstate.getIdBill();
                         try {
-                            Parent root = FXMLLoader.load(getClass().getResource("up_supplier.fxml"));
+                            Parent root = FXMLLoader.load(getClass().getResource("ViewDetailBillIn.fxml"));
                             Stage stage = new Stage();
                             Scene scene = new Scene(root);
 
@@ -1318,7 +1329,6 @@ public class DatabroadController implements Initializable {
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setScene(scene);
                             stage.setOnHidden(e -> {
-                                // Thực hiện các hành động sau khi cửa sổ kết thúc
 
                             });
 
@@ -1345,8 +1355,26 @@ public class DatabroadController implements Initializable {
         });
         bill_tbl.setItems(bills);
     }
+
+    public void onNhapbillIn(ActionEvent even){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("InputBill.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setOnHidden(e -> {
+
+            });
+
+            stage.show();
+        }
+        catch (Exception ex){ex.printStackTrace();
+        }
+    }
     //endregion
-    // =======================Bill===============
+    // region=======================Bill===============
     public void addBill(){
 
         //thông báo đăng nhập thành công và trờ về trang chủ
@@ -1665,7 +1693,7 @@ public class DatabroadController implements Initializable {
     //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //displayUser();
+        displayUser();
         showStaff();
         add_list_sex();
         if(getData.state == "bill"){
