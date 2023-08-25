@@ -131,8 +131,8 @@ public class InPutBillController implements Initializable {
         String name = "";
         try {
             while (rs.next()) {
-                name = rs.getString("idMe");
-                id = rs.getString("nameMedi");
+                id = rs.getString("idMe");
+                name = rs.getString("nameMedi");
             }
 
         } catch (Exception ex) {
