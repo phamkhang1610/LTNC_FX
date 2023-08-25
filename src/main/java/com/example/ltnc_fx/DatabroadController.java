@@ -641,7 +641,7 @@ public class DatabroadController implements Initializable {
                                 Stage stage = new Stage();
                                 Scene scene = new Scene(root);
                                 //ẩn trang cũ
-                                upIcon.getScene().getWindow().hide();
+                                //upIcon.getScene().getWindow().hide();
                                 stage.initStyle(StageStyle.TRANSPARENT);
                                 stage.setScene(scene);
                                 stage.show();
@@ -879,7 +879,7 @@ public class DatabroadController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             //ẩn trang cũ
-            add_btl_Me.getScene().getWindow().hide();
+            //add_btl_Me.getScene().getWindow().hide();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.show();
@@ -991,7 +991,7 @@ public class DatabroadController implements Initializable {
                                         Stage stage = new Stage();
                                         Scene scene = new Scene(root);
                                         //ẩn trang cũ
-                                        //upIcon_search.getScene().getWindow().hide();
+                                        upIcon_search.getScene().getWindow().hide();
                                         stage.initStyle(StageStyle.TRANSPARENT);
                                         stage.setScene(scene);
                                         stage.show();
